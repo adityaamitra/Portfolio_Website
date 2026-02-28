@@ -1,5 +1,4 @@
-export default async function handler(req, res) {
-  // Only allow POST
+module.exports = async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -26,34 +25,43 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Unknown tool" });
   }
 
+  const apiKey = process.env.GROQ_API_KEY;
+  if (!apiKey) {
+    return res.status(500).json({ error: "API key not configured" });
+  }
+
   try {
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": process.env.ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
+        "Authorization": `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: "claude-haiku-4-5-20251001", // Fast + cost-efficient for chat widgets
+        model: "llama-3.1-8b-instant", // free, very fast
         max_tokens: 300,
-        system: systemPrompt,
-        messages: [{ role: "user", content: message }],
+        temperature: 0.7,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: message },
+        ],
       }),
     });
 
     if (!response.ok) {
       const err = await response.json();
-      console.error("Anthropic API error:", err);
+      console.error("Groq API error:", JSON.stringify(err));
       return res.status(502).json({ error: "Upstream API error" });
     }
 
     const data = await response.json();
-    const reply = data.content?.[0]?.text ?? "Sorry, I couldn't generate a response.";
+    const reply =
+      data.choices?.[0]?.message?.content ??
+      "Sorry, I couldn't generate a response.";
 
     return res.status(200).json({ reply });
   } catch (err) {
     console.error("Handler error:", err);
     return res.status(500).json({ error: "Internal server error" });
   }
-}
+};
