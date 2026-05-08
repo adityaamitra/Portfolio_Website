@@ -2,7 +2,7 @@
 
 A production-grade personal portfolio website built with vanilla HTML, CSS, and JavaScript. Designed for Software Engineering, DevOps, and AI Engineering roles — featuring live AI tool integrations powered by the Claude API.
 
-🌐 **Live Site:** [adityamitra.framer.website](https://adityamitra.framer.website/) *(current)*
+🌐 **Live Site:** [adityamitra.vercel.app](https://adityamitra.vercel.app) *(current)*
 📄 **Resume:** [View on Google Drive](https://drive.google.com/file/d/14bQdxPWwgqRGOER3IMYZqR65xLh-51vB/view?usp=sharing)
 
 ---
