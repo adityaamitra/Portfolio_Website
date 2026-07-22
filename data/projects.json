@@ -1,104 +1,169 @@
 [
   {
     "id": "algosensei",
-    "title": "AlgoSensei — Adaptive DSA Tutor",
-    "blurb": "The DSA tutor that guides you without giving away the answer. Delivers calibrated Socratic hints for 175+ LeetCode problems across 14 patterns. A dual-stage leakage gate (regex + semantic) enforces 0% answer reveal rate — architecturally. Includes screenshot-to-session OCR, code analysis, audio output, and progress tracking.",
-    "tags": ["Python", "FastAPI", "Qdrant", "RAG", "OpenRouter", "SQLite + JWT", "OCR", "Docker"],
+    "order": 1,
+    "title": "AlgoSensei — GenAI DSA Tutor",
+    "period": "2025 — Present",
+    "description": "A Socratic tutoring app for 175+ LeetCode problems across 14 DSA patterns. Instead of handing you the solution, it asks calibrated questions until you reach the insight yourself — and a two-stage leakage gate makes that architecturally enforced: the system cannot reveal the answer even if you ask directly.",
+    "metrics": [
+      { "value": "175+", "label": "LeetCode problems" },
+      { "value": "0%", "label": "answer leakage" },
+      { "value": "$0", "label": "infra cost to run" }
+    ],
+    "tags": ["Python", "FastAPI", "Qdrant", "RAG", "SQLite + JWT", "Tesseract OCR", "Docker"],
     "repo": "https://github.com/adityaamitra/AlgoSensei-GenAI",
     "demo": "https://adityaamitra-algosensei.hf.space",
-    "highlights": [],
-    "featured": true,
-    "order": 1,
-    "updated": "2026-07-21",
-    "type": "AI / ML · Featured",
-    "date": "2025 – Present",
-    "icon": "🧠",
-    "filterTags": ["ai", "agentic"],
-    "demoLabel": "↗ Live Demo"
+    "demoLabel": "Live demo",
+    "extraLinks": [
+      { "href": "https://youtu.be/DngHH4ujmcY", "label": "Demo video" }
+    ],
+    "caseStudy": {
+      "intro": "Every DSA prep tool either solves the problem for you or gives vague encouragement. ChatGPT hands you the answer in thirty seconds; editorials walk you through the solution before you've had time to think. AlgoSensei lives in the gap between \"I'm stuck\" and \"I looked up the answer\" — it gives you the minimum hint needed to make progress.",
+      "sections": [
+        {
+          "heading": "The leakage gate",
+          "paragraphs": [
+            "The core architectural decision is a two-stage safety check that runs on every response. Stage one is regex: scan for direct algorithm names and solution-shaped phrases. Stage two is semantic: a similarity check against a library of \"direct reveal\" patterns. If either stage flags the response, the system discards it and regenerates — up to three times.",
+            "This isn't a prompt instruction you can talk your way around; it's enforced in code. Measured across all 175 problems and every hint level, the leakage rate is 0%."
+          ]
+        },
+        {
+          "heading": "The RAG pipeline",
+          "paragraphs": [
+            "Each query is embedded locally with all-MiniLM-L6-v2 (zero API cost) and sent to Qdrant Cloud, which returns the top-4 chunks from a curated knowledge base of 49 DSA pattern explanations sourced from CLRS, MIT, and Stanford material. The LLM generates a three-level Socratic hint — Direction, Structure, Near-Solution — grounded in that retrieved context, so a backtracking hint reads differently from a sliding-window hint."
+          ]
+        },
+        {
+          "heading": "Beyond hints",
+          "paragraphs": [
+            "A Tesseract OCR pipeline turns any LeetCode screenshot into a live tutoring session. Code analysis takes your current attempt and asks one targeted question about where it breaks down. Auth is SQLite + PBKDF2 + JWT with no external service, tracking progress across all 14 patterns. The LLM client is provider-agnostic (OpenRouter or OpenAI), and the whole app ships as a Docker container on Hugging Face Spaces.",
+            "Total cost to run: $0 — OpenRouter free tier, Qdrant free tier, local embeddings, local OCR."
+          ]
+        }
+      ]
+    }
   },
   {
     "id": "multi-agent-productivity-assistant",
+    "order": 2,
     "title": "Multi-Agent Personal Productivity Assistant",
-    "blurb": "A production-grade multi-agent system with 6 specialized CrewAI agents — Task Manager, Researcher, Scheduler, Analytics, Career Coach, and Controller. Transforms any task list into Eisenhower-scored priorities, a time-blocked weekly schedule, meeting prep packages, and a 30-day productivity roadmap. Real-time SSE streaming dashboard with Pomodoro timer, PDF export, and session history.",
-    "tags": ["CrewAI", "Flask", "OpenRouter", "Llama 3.3 70B", "SQLite", "SSE Streaming", "Python"],
+    "period": "2026",
+    "description": "A multi-agent CrewAI system — 6 specialized agents and 5 custom Python tools — that turns a raw task list into Eisenhower-scored priorities, a time-blocked weekly schedule, meeting prep packages, and a 30-day roadmap, streamed live to a Flask dashboard over SSE.",
+    "metrics": [
+      { "value": "6", "label": "specialized agents" },
+      { "value": "5", "label": "custom Pydantic tools" },
+      { "value": "~$0.02", "label": "per full run" }
+    ],
+    "tags": ["Python", "CrewAI", "Flask", "Pydantic", "LiteLLM", "SQLite", "SSE"],
     "repo": "https://github.com/adityaamitra/Multi-Agent-Personal-Productivity-Assistant",
     "demo": null,
-    "highlights": [],
-    "featured": true,
-    "order": 2,
-    "updated": "2026-07-21",
-    "type": "Agentic AI · Featured",
-    "date": "2026",
-    "icon": "🤖",
-    "filterTags": ["agentic", "ai"],
-    "demoLabel": null
+    "demoLabel": null,
+    "extraLinks": [],
+    "caseStudy": {
+      "intro": "Paste in assignments, job applications, meetings, and personal goals, and six agents — Task Manager, Researcher, Scheduler, Analytics, Career Coach, and Controller — analyze, research, schedule, and synthesize everything into one actionable report. Each agent has its own tools and Pydantic-typed input/output contracts.",
+      "sections": [
+        {
+          "heading": "The context-window problem",
+          "paragraphs": [
+            "CrewAI's sequential mode automatically passes every prior task output to the next task as context. By task three, the pipeline reliably exceeded the LLM's token limit and crashed. The fix was explicit per-task context isolation: task.context = [] on tasks 1–5, with only the final synthesis task receiving all prior outputs explicitly. This was the single most important architectural decision in the project — it keeps the pipeline reliable no matter how long the task list grows."
+          ]
+        },
+        {
+          "heading": "Custom tools do the real work",
+          "paragraphs": [
+            "Five custom Python tools carry the domain logic: SmartPrioritizerTool implements the full Eisenhower Matrix with an effort penalty, DeadlineTrackerTool parses natural-language deadlines (\"due tomorrow\", \"due in 3 days\") into RED/YELLOW/GREEN alerts, MeetingPreparerTool generates agendas and prep checklists per meeting type, plus productivity analytics and a live weather tool for scheduling recommendations."
+          ]
+        },
+        {
+          "heading": "A dashboard you can watch think",
+          "paragraphs": [
+            "The Flask backend streams agent progress to the browser over Server-Sent Events, so each agent card animates live as that agent starts work. The dashboard includes a Pomodoro timer, task completion tracking persisted to SQLite, session history, task templates, and PDF export of the final report.",
+            "The whole stack runs on effectively free infrastructure — Llama 3.3 70B via OpenRouter at roughly $0.02 per full run."
+          ]
+        }
+      ]
+    }
   },
   {
     "id": "dqn-atari-freeway",
-    "title": "DQN Agent on Atari Freeway",
-    "blurb": "Trained a Deep Q-Network (DQN) agent from zero on ALE/Freeway-v5, reaching 73% of human-level performance (21.67 crossings/episode vs 29.6 human) after 5,000 episodes on a Kaggle Tesla T4 GPU. Implements the full Mnih et al. 2015 architecture with experience replay, target network, and Huber loss. Includes Bellman parameter experiments and Boltzmann exploration.",
-    "tags": ["PyTorch", "Gymnasium", "ALE / Atari", "DQN", "Jupyter", "Kaggle GPU"],
+    "order": 3,
+    "title": "Deep Q-Learning on Atari Freeway",
+    "period": "2025",
+    "description": "A DQN agent trained from scratch on ALE/Freeway-v5 — no rules, no instructions, just a +1 reward per crossing. Implements the full Mnih et al. 2015 architecture in PyTorch and reaches 73% of human-level performance after 5,000 episodes on a free Kaggle T4 GPU.",
+    "metrics": [
+      { "value": "73%", "label": "of human-level play" },
+      { "value": "21.67", "label": "crossings / episode" },
+      { "value": "1.69M", "label": "network parameters" }
+    ],
+    "tags": ["PyTorch", "Gymnasium", "ALE / Atari", "DQN", "Kaggle GPU"],
     "repo": "https://github.com/adityaamitra/LLM-Agents-Deep-Q-Learning-with-Atari-Game-Freeway-",
     "demo": "https://www.kaggle.com/code/mitraditya123/freeway",
-    "highlights": [],
-    "featured": true,
-    "order": 3,
-    "updated": "2026-07-21",
-    "type": "Reinforcement Learning",
-    "date": "2025",
-    "icon": "🎮",
-    "filterTags": ["rl", "ai"],
-    "demoLabel": "↗ Kaggle Notebook"
+    "demoLabel": "Kaggle notebook",
+    "extraLinks": [],
+    "caseStudy": {
+      "intro": "Freeway is deceptively simple: a chicken must cross ten lanes of traffic, and the agent gets +1 each time it succeeds — nothing else. At episode 1 it presses buttons randomly; by episode 1,000 it navigates traffic consistently, driven entirely by the Bellman equation and a convolutional neural network.",
+      "sections": [
+        {
+          "heading": "Making pixels learnable",
+          "paragraphs": [
+            "Raw Atari output is 210×160 RGB at 60fps — far too much for efficient learning. Five wrappers fix that: max-and-skip eliminates sprite flicker, grayscale-resize collapses each frame to 84×84 (72% smaller), reward clipping normalizes the signal, and a 4-frame stack lets the network perceive motion. A no-op reset wrapper prevents it from memorizing fixed opening sequences."
+          ]
+        },
+        {
+          "heading": "The classic DQN recipe, implemented exactly",
+          "paragraphs": [
+            "The network is the Mnih et al. 2015 CNN — three conv layers plus two fully connected, 1,685,667 parameters, outputting Q-values for NOOP, UP, and DOWN. Stability comes from the standard trio: an experience replay buffer of 30,000 transitions to break temporal correlation, a frozen target network synced every 1,000 steps, and Huber loss with gradient clipping to bound the damage from early random Q-values."
+          ]
+        },
+        {
+          "heading": "The most interesting result",
+          "paragraphs": [
+            "The baseline (α=1e-4) converged at ~21.7 crossings per episode — 73% of the 29.6 human-expert score, from a random baseline of 0–1. But the learning-rate experiment produced the standout finding: a lower learning rate (α=2e-5) started slower yet eventually exceeded 30 crossings — above human level. Smaller gradient steps avoided the local optima the faster learner settled into prematurely.",
+            "The project also compares ε-greedy against Boltzmann (softmax) exploration and analyzes discount-factor sensitivity. Total training time: ~7.8 hours on a Kaggle Tesla T4."
+          ]
+        }
+      ]
+    }
   },
   {
     "id": "med-llama-medical-qa",
-    "title": "Med-Llama 3.2 — Medical Q&A System",
-    "blurb": "Fine-tuned Llama-3.2-1B-Instruct on the MedQuAD dataset using LoRA (r=16, 0.9% of parameters). Achieves ROUGE-1 of 0.3359 vs 0.2547 baseline (+31.5% improvement). Safety injection automatically appends medical disclaimers across all training responses. NEFTune noise regularization prevents overfitting. Interactive Gradio demo included.",
-    "tags": ["Python", "PyTorch", "LoRA / PEFT", "Llama 3.2", "Hugging Face", "Gradio", "NEFTune"],
+    "order": 4,
+    "title": "Med-Llama — Medical Q&A with a Fine-Tuned LLM",
+    "period": "2025",
+    "description": "Llama-3.2-1B-Instruct fine-tuned on the MedQuAD medical Q&A dataset with LoRA/PEFT — training under 1% of the model's parameters on a free Kaggle T4. Evaluated with ROUGE against the base model, with automatic medical disclaimers baked into every response.",
+    "metrics": [
+      { "value": "+31.5%", "label": "ROUGE-1 vs base" },
+      { "value": "0.9%", "label": "of params trained" },
+      { "value": "500", "label": "training steps on T4" }
+    ],
+    "tags": ["Python", "PyTorch", "LoRA / PEFT", "Hugging Face", "Llama 3.2", "Gradio", "ROUGE"],
     "repo": "https://github.com/adityaamitra/Medical-Question-Answering-System-with-Fine-tuned-LLM",
     "demo": null,
-    "highlights": [],
-    "featured": true,
-    "order": 4,
-    "updated": "2026-07-21",
-    "type": "AI / ML · LLM Fine-Tuning",
-    "date": "2025",
-    "icon": "⚕️",
-    "filterTags": ["ai"],
-    "demoLabel": null
-  },
-  {
-    "id": "ai-coach-corner",
-    "title": "AI Coach Corner",
-    "blurb": "A suite of 5 Claude-powered coaching tools for developers at every stage — WebPath (full-stack guidance), DevPath AI (DevOps mentor), TechPath (career navigator), PyPath (Python learning companion), and Aria (AI roadmap assistant). Live in-page AI chat widgets built on the Anthropic API with custom system prompts.",
-    "tags": ["HTML/CSS/JS", "Claude API", "Anthropic", "Vanilla JS"],
-    "repo": "https://github.com/adityaamitra/AI_Coach_Corner",
-    "demo": null,
-    "highlights": [],
-    "featured": true,
-    "order": 5,
-    "updated": "2026-07-21",
-    "type": "AI Tools · Full-Stack",
-    "date": "2026",
-    "icon": "🎯",
-    "filterTags": ["ai", "fullstack"],
-    "demoLabel": null
-  },
-  {
-    "id": "smart-room-cleaning-agent",
-    "title": "Smart Room Cleaning Agent",
-    "blurb": "Autonomous room-cleaning simulation powered by a Simple Reflex Agent model. The agent perceives a grid environment, detects dirty cells, and applies condition-action rules to navigate and clean efficiently. Implements environment state management, performance benchmarking, and agent evaluation across multiple room configurations.",
-    "tags": ["Python", "AI Agents", "Reflex Model", "Simulation"],
-    "repo": "https://github.com/adityaamitra/Smart_Room_Cleaning_Agent",
-    "demo": null,
-    "highlights": [],
-    "featured": true,
-    "order": 6,
-    "updated": "2026-07-21",
-    "type": "AI Agents",
-    "date": "2025",
-    "icon": "🧹",
-    "filterTags": ["ai"],
-    "demoLabel": null
+    "demoLabel": null,
+    "extraLinks": [],
+    "caseStudy": {
+      "intro": "General-purpose LLMs lack the specialized knowledge that sensitive domains like healthcare demand. This project adapts a small instruction-tuned Llama to real medical questions from MedQuAD — patient questions with expert-written answers from trusted medical sources — while staying computationally cheap enough for a free GPU.",
+      "sections": [
+        {
+          "heading": "Parameter-efficient by design",
+          "paragraphs": [
+            "LoRA freezes the base weights and injects small trainable rank-decomposition matrices into the attention layers, so training touches roughly 0.9% of the model's parameters. Training ran 500 steps on a Kaggle Tesla T4 with FP16 mixed precision, a cosine schedule with warmup, and a proper 80/10/10 train/validation/test split — the learning rate (1e-4) chosen by comparison across runs."
+          ]
+        },
+        {
+          "heading": "Safety by training, not by filter",
+          "paragraphs": [
+            "Every training answer was automatically appended with a medical disclaimer, so the model learns safety caveats as part of its natural response pattern — a behavioral baseline baked into the weights rather than a post-hoc filter. The deployed model consistently reminds users to consult a healthcare professional without being prompted to."
+          ]
+        },
+        {
+          "heading": "Evaluation and honest failure analysis",
+          "paragraphs": [
+            "Scored with ROUGE against the base model on the held-out test set, the fine-tuned model improved ROUGE-1 by 31.5% (0.336 vs 0.255) and produced answers substantially closer to expert responses. Error analysis identified where it still fails — rare conditions absent from training data, long ambiguous queries, and questions needing up-to-date knowledge — pointing to RAG and larger base models as next steps.",
+            "The model is served through a Gradio chat interface for real-time inference, with separate inference paths for CPU and merged-model deployment."
+          ]
+        }
+      ]
+    }
   }
 ]
