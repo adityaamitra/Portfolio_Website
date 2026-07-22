@@ -571,129 +571,7 @@ footer { background: var(--bg); border-top: 1px solid rgba(255,255,255,.04); pad
       <button class="filter-btn" data-filter="fullstack">Full-Stack</button>
     </div>
     <div class="projects-grid" id="projects-grid">
-
-      <!-- 1. AlgoSensei -->
-      <div class="project-card project-featured fade-up" data-tags="ai agentic">
-        <div class="project-meta">
-          <span class="project-type">AI / ML · Featured</span>
-          <span class="project-date">2025 – Present</span>
-        </div>
-        <div class="project-icon">🧠</div>
-        <div class="project-title">AlgoSensei — Adaptive DSA Tutor</div>
-        <div class="project-desc">The DSA tutor that guides you without giving away the answer. Delivers calibrated Socratic hints for 175+ LeetCode problems across 14 patterns. A dual-stage leakage gate (regex + semantic) enforces 0% answer reveal rate — architecturally. Includes screenshot-to-session OCR, code analysis, audio output, and progress tracking.</div>
-        <div class="project-tags">
-          <span class="project-tag">Python</span><span class="project-tag">FastAPI</span><span class="project-tag">Qdrant</span><span class="project-tag">RAG</span><span class="project-tag">OpenRouter</span><span class="project-tag">SQLite + JWT</span><span class="project-tag">OCR</span><span class="project-tag">Docker</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/adityaamitra/AlgoSensei-GenAI" target="_blank" class="project-link">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2 0-.4-.5-1.6.2-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 6.7 18 7 18 7c.7 1.6.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg>
-            GitHub
-          </a>
-          <a href="https://adityaamitra-algosensei.hf.space" target="_blank" class="project-link">↗ Live Demo</a>
-        </div>
-      </div>
-
-      <!-- 2. Multi-Agent Productivity -->
-      <div class="project-card project-featured fade-up" data-tags="agentic ai" style="animation-delay:.08s">
-        <div class="project-meta">
-          <span class="project-type">Agentic AI · Featured</span>
-          <span class="project-date">2026</span>
-        </div>
-        <div class="project-icon">🤖</div>
-        <div class="project-title">Multi-Agent Personal Productivity Assistant</div>
-        <div class="project-desc">A production-grade multi-agent system with 6 specialized CrewAI agents — Task Manager, Researcher, Scheduler, Analytics, Career Coach, and Controller. Transforms any task list into Eisenhower-scored priorities, a time-blocked weekly schedule, meeting prep packages, and a 30-day productivity roadmap. Real-time SSE streaming dashboard with Pomodoro timer, PDF export, and session history.</div>
-        <div class="project-tags">
-          <span class="project-tag">CrewAI</span><span class="project-tag">Flask</span><span class="project-tag">OpenRouter</span><span class="project-tag">Llama 3.3 70B</span><span class="project-tag">SQLite</span><span class="project-tag">SSE Streaming</span><span class="project-tag">Python</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/adityaamitra/Multi-Agent-Personal-Productivity-Assistant" target="_blank" class="project-link">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2 0-.4-.5-1.6.2-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 6.7 18 7 18 7c.7 1.6.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg>
-            GitHub
-          </a>
-        </div>
-      </div>
-
-      <!-- 3. DQN Atari -->
-      <div class="project-card fade-up" data-tags="rl ai" style="animation-delay:.16s">
-        <div class="project-meta">
-          <span class="project-type">Reinforcement Learning</span>
-          <span class="project-date">2025</span>
-        </div>
-        <div class="project-icon">🎮</div>
-        <div class="project-title">DQN Agent on Atari Freeway</div>
-        <div class="project-desc">Trained a Deep Q-Network (DQN) agent from zero on ALE/Freeway-v5, reaching 73% of human-level performance (21.67 crossings/episode vs 29.6 human) after 5,000 episodes on a Kaggle Tesla T4 GPU. Implements the full Mnih et al. 2015 architecture with experience replay, target network, and Huber loss. Includes Bellman parameter experiments and Boltzmann exploration.</div>
-        <div class="project-tags">
-          <span class="project-tag">PyTorch</span><span class="project-tag">Gymnasium</span><span class="project-tag">ALE / Atari</span><span class="project-tag">DQN</span><span class="project-tag">Jupyter</span><span class="project-tag">Kaggle GPU</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/adityaamitra/LLM-Agents-Deep-Q-Learning-with-Atari-Game-Freeway-" target="_blank" class="project-link">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2 0-.4-.5-1.6.2-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 6.7 18 7 18 7c.7 1.6.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg>
-            GitHub
-          </a>
-          <a href="https://www.kaggle.com/code/mitraditya123/freeway" target="_blank" class="project-link">↗ Kaggle Notebook</a>
-        </div>
-      </div>
-
-      <!-- 4. Medical LLM -->
-      <div class="project-card fade-up" data-tags="ai" style="animation-delay:.24s">
-        <div class="project-meta">
-          <span class="project-type">AI / ML · LLM Fine-Tuning</span>
-          <span class="project-date">2025</span>
-        </div>
-        <div class="project-icon">⚕️</div>
-        <div class="project-title">Med-Llama 3.2 — Medical Q&A System</div>
-        <div class="project-desc">Fine-tuned Llama-3.2-1B-Instruct on the MedQuAD dataset using LoRA (r=16, 0.9% of parameters). Achieves ROUGE-1 of 0.3359 vs 0.2547 baseline (+31.5% improvement). Safety injection automatically appends medical disclaimers across all training responses. NEFTune noise regularization prevents overfitting. Interactive Gradio demo included.</div>
-        <div class="project-tags">
-          <span class="project-tag">Python</span><span class="project-tag">PyTorch</span><span class="project-tag">LoRA / PEFT</span><span class="project-tag">Llama 3.2</span><span class="project-tag">Hugging Face</span><span class="project-tag">Gradio</span><span class="project-tag">NEFTune</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/adityaamitra/Medical-Question-Answering-System-with-Fine-tuned-LLM" target="_blank" class="project-link">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2 0-.4-.5-1.6.2-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 6.7 18 7 18 7c.7 1.6.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg>
-            GitHub
-          </a>
-        </div>
-      </div>
-
-      <!-- 5. AI Coach Corner -->
-      <div class="project-card fade-up" data-tags="ai fullstack" style="animation-delay:.32s">
-        <div class="project-meta">
-          <span class="project-type">AI Tools · Full-Stack</span>
-          <span class="project-date">2026</span>
-        </div>
-        <div class="project-icon">🎯</div>
-        <div class="project-title">AI Coach Corner</div>
-        <div class="project-desc">A suite of 5 Claude-powered coaching tools for developers at every stage — WebPath (full-stack guidance), DevPath AI (DevOps mentor), TechPath (career navigator), PyPath (Python learning companion), and Aria (AI roadmap assistant). Live in-page AI chat widgets built on the Anthropic API with custom system prompts.</div>
-        <div class="project-tags">
-          <span class="project-tag">HTML/CSS/JS</span><span class="project-tag">Claude API</span><span class="project-tag">Anthropic</span><span class="project-tag">Vanilla JS</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/adityaamitra/AI_Coach_Corner" target="_blank" class="project-link">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2 0-.4-.5-1.6.2-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 6.7 18 7 18 7c.7 1.6.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg>
-            GitHub
-          </a>
-        </div>
-      </div>
-
-      <!-- 6. Smart Room Cleaning Agent -->
-      <div class="project-card fade-up" data-tags="ai" style="animation-delay:.4s">
-        <div class="project-meta">
-          <span class="project-type">AI Agents</span>
-          <span class="project-date">2025</span>
-        </div>
-        <div class="project-icon">🧹</div>
-        <div class="project-title">Smart Room Cleaning Agent</div>
-        <div class="project-desc">Autonomous room-cleaning simulation powered by a Simple Reflex Agent model. The agent perceives a grid environment, detects dirty cells, and applies condition-action rules to navigate and clean efficiently. Implements environment state management, performance benchmarking, and agent evaluation across multiple room configurations.</div>
-        <div class="project-tags">
-          <span class="project-tag">Python</span><span class="project-tag">AI Agents</span><span class="project-tag">Reflex Model</span><span class="project-tag">Simulation</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/adityaamitra/Smart_Room_Cleaning_Agent" target="_blank" class="project-link">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2 0-.4-.5-1.6.2-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 6.7 18 7 18 7c.7 1.6.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg>
-            GitHub
-          </a>
-        </div>
-      </div>
-
+      <!-- Project cards are rendered from /data/projects.json by the script at the end of this page -->
     </div>
   </div>
 </section>
@@ -1389,6 +1267,49 @@ document.getElementById('theme-toggle').addEventListener('click', function() {
 
 // Escape key closes modal
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBlogDirect(); });
+</script>
+<script>
+// ========= Data-Driven Projects =========
+const GITHUB_SVG = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2 0-.4-.5-1.6.2-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 6.7 18 7 18 7c.7 1.6.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg>';
+function escapeHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+fetch('/data/projects.json')
+  .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+  .then(projects => {
+    const grid = document.getElementById('projects-grid');
+    if (!grid) return;
+    grid.innerHTML = projects.slice().sort((a, b) => a.order - b.order).map((p, i) => {
+      // '· Featured' in the type label controls the highlighted card style
+      const featuredClass = (p.type || '').includes('Featured') ? ' project-featured' : '';
+      const delay = i ? ` style="animation-delay:${String((i * 8) / 100).replace(/^0/, '')}s"` : '';
+      const tags = (p.tags || []).map(t => `<span class="project-tag">${escapeHtml(t)}</span>`).join('');
+      const highlights = (p.highlights || []).length
+        ? `<ul class="project-highlights">${p.highlights.map(h => `<li>${escapeHtml(h)}</li>`).join('')}</ul>`
+        : '';
+      const links = [
+        p.repo ? `<a href="${escapeHtml(p.repo)}" target="_blank" class="project-link">${GITHUB_SVG} GitHub </a>` : '',
+        p.demo ? `<a href="${escapeHtml(p.demo)}" target="_blank" class="project-link">${escapeHtml(p.demoLabel || '↗ Live Demo')}</a>` : ''
+      ].join('');
+      return `<div class="project-card${featuredClass} fade-up" data-tags="${escapeHtml((p.filterTags || []).join(' '))}"${delay}>
+        <div class="project-meta">
+          <span class="project-type">${escapeHtml(p.type)}</span>
+          <span class="project-date">${escapeHtml(p.date)}</span>
+        </div>
+        <div class="project-icon">${escapeHtml(p.icon)}</div>
+        <div class="project-title">${escapeHtml(p.title)}</div>
+        <div class="project-desc">${escapeHtml(p.blurb)}</div>${highlights}
+        <div class="project-tags">${tags}</div>
+        <div class="project-links">${links}</div>
+      </div>`;
+    }).join('\n');
+    grid.querySelectorAll('.project-card').forEach(card => {
+      observer.observe(card);
+      card.addEventListener('mouseenter', () => { cursor.style.width='14px'; cursor.style.height='14px'; ring.style.width='50px'; ring.style.height='50px'; });
+      card.addEventListener('mouseleave', () => { cursor.style.width='8px'; cursor.style.height='8px'; ring.style.width='36px'; ring.style.height='36px'; });
+    });
+  })
+  .catch(err => console.error('Failed to load projects:', err));
 </script>
 </body>
 </html>
