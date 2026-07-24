@@ -30,15 +30,32 @@
   "@context": "https://schema.org",
   "@type": "Person",
   "name": "Aditya Mitra",
+  "givenName": "Aditya",
+  "familyName": "Mitra",
   "jobTitle": "Software Engineer",
   "email": "mailto:mitraditya23@gmail.com",
   "url": "https://adityamitra.vercel.app",
   "image": "https://avatars.githubusercontent.com/u/181271385?v=4",
-  "address": { "@type": "PostalAddress", "addressLocality": "Boston", "addressRegion": "MA" },
+  "address": { "@type": "PostalAddress", "addressLocality": "Boston", "addressRegion": "MA", "addressCountry": "US" },
   "alumniOf": [
     { "@type": "CollegeOrUniversity", "name": "Northeastern University" },
     { "@type": "CollegeOrUniversity", "name": "Amity University Mumbai" }
   ],
+  "hasCredential": [
+    {
+      "@type": "EducationalOccupationalCredential",
+      "credentialCategory": "degree",
+      "name": "M.S. in Information Systems",
+      "recognizedBy": { "@type": "CollegeOrUniversity", "name": "Northeastern University" }
+    },
+    {
+      "@type": "EducationalOccupationalCredential",
+      "credentialCategory": "degree",
+      "name": "B.Tech in Computer Science Engineering",
+      "recognizedBy": { "@type": "CollegeOrUniversity", "name": "Amity University Mumbai" }
+    }
+  ],
+  "knowsAbout": ["Full-stack web development", "RESTful APIs", "Python", "TypeScript", "React", "FastAPI", "PyTorch", "Retrieval-Augmented Generation", "Machine Learning"],
   "sameAs": [
     "https://github.com/adityaamitra",
     "https://www.linkedin.com/in/mitraditya23/"
@@ -604,7 +621,6 @@ footer a:hover { color: var(--accent); }
         </div>
         <div class="contact-meta">
           <a href="mailto:mitraditya23@gmail.com">mitraditya23@gmail.com</a>
-          <a href="tel:+18572344870">+1 (857) 234-4870</a>
           <span>Boston, MA · open to relocation</span>
         </div>
       </div>
