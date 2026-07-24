@@ -590,6 +590,35 @@ kbd {
   padding: 0 .35em;
 }
 
+/* ============ Mobile ============ */
+@media (max-width: 640px) {
+  .wrap { padding: 0 1.3rem; }
+  section { padding: 4rem 0 1.5rem; }
+  .sec-head { margin-bottom: 2rem; gap: .9rem; }
+  .nav-inner { padding: .8rem 1.3rem; }
+
+  .hero { min-height: 0; padding: 6.2rem 0 2.6rem; }
+  .hero-grid { gap: 1.6rem; }
+  .hero-photo { order: -1; width: 108px; justify-self: start; }
+  .hero-photo::before { border-radius: 20px; }
+  .hero-photo img { aspect-ratio: 1 / 1; object-fit: cover; object-position: 50% 12%; border-radius: 20px; animation: none; }
+  .hero-eyebrow { font-size: .66rem; letter-spacing: .12em; margin-bottom: 1.1rem; }
+  .hero-eyebrow::before { display: none; }
+  .hero-pitch { margin-top: 1.3rem; }
+  .hero-actions { margin-top: 1.8rem; }
+  .hero-socials { margin-top: 1.5rem; }
+  .scroll-hint { display: none; }
+
+  .marquee { padding: .75rem 0; }
+  .proj { padding: 2.4rem 0; }
+  .p-metrics { gap: 1.4rem; }
+  .resume-band { padding: 1.8rem 1.4rem; margin-top: 3.5rem; }
+  .timeline { padding-left: 1.9rem; }
+  .xp::before { left: -1.9rem; }
+  .xp-edu-note { padding-left: 1.9rem; }
+  footer .wrap { flex-direction: column; gap: .4rem; }
+}
+
 /* ============ Reduced motion ============ */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
