@@ -10,7 +10,7 @@
 <meta property="og:title" content="Aditya Mitra — Software Engineer" />
 <meta property="og:description" content="Software engineer in Boston. Full-stack web applications, RESTful APIs, and AI systems — FastAPI, Flask, React, TypeScript, PyTorch." />
 <meta property="og:url" content="https://adityamitra.vercel.app" />
-<meta property="og:image" content="https://avatars.githubusercontent.com/u/181271385?v=4" />
+<meta property="og:image" content="https://adityamitra.vercel.app/images/aditya.jpg" />
 <meta name="theme-color" content="#0a0a14" />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -26,7 +26,7 @@
   "jobTitle": "Software Engineer",
   "email": "mailto:mitraditya23@gmail.com",
   "url": "https://adityamitra.vercel.app",
-  "image": "https://avatars.githubusercontent.com/u/181271385?v=4",
+  "image": "https://adityamitra.vercel.app/images/aditya.jpg",
   "address": { "@type": "PostalAddress", "addressLocality": "Boston", "addressRegion": "MA", "addressCountry": "US" },
   "alumniOf": [
     { "@type": "CollegeOrUniversity", "name": "Northeastern University" },
@@ -223,11 +223,33 @@ a { color: inherit; text-decoration: none; }
 @keyframes descend { 0% { transform: scaleY(0); transform-origin: top } 55% { transform: scaleY(1); transform-origin: top } 56% { transform-origin: bottom } 100% { transform: scaleY(0); transform-origin: bottom } }
 @media (max-height: 720px) { .scroll-hint { display: none; } }
 
+/* Hero photo */
+.hero-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 3.5rem; align-items: center; }
+.hero-photo { position: relative; justify-self: end; width: min(100%, 380px); }
+.hero-photo::before {
+  content: ''; position: absolute; inset: -1px; border-radius: 24px; padding: 1px;
+  background: linear-gradient(160deg, var(--violet), transparent 35%, transparent 65%, var(--cyan));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  pointer-events: none; z-index: 1;
+}
+.hero-photo img {
+  border-radius: 24px; width: 100%; height: auto;
+  border: 1px solid var(--border-strong);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .55), 0 0 70px rgba(139, 92, 246, .16);
+  animation: float 7s ease-in-out infinite alternate;
+}
+@keyframes float { to { transform: translateY(-12px); } }
+@media (max-width: 900px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 2.6rem; }
+  .hero-photo { justify-self: start; width: min(68%, 300px); }
+}
+
 /* Hero entrance */
 .hero [data-hero] { opacity: 0; transform: translateY(26px); animation: rise .9s var(--ease-spring) forwards; }
 .hero [data-hero="1"] { animation-delay: .05s } .hero [data-hero="2"] { animation-delay: .15s }
 .hero [data-hero="3"] { animation-delay: .28s } .hero [data-hero="4"] { animation-delay: .4s }
-.hero [data-hero="5"] { animation-delay: .5s }
+.hero [data-hero="5"] { animation-delay: .5s } .hero [data-hero="6"] { animation-delay: .3s }
 @keyframes rise { to { opacity: 1; transform: none } }
 
 /* ============ Marquee ============ */
@@ -497,7 +519,7 @@ footer a:hover { color: var(--cyan); }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal, .hero [data-hero] { opacity: 1; transform: none; transition: none; animation: none; }
-  .orb, .availability::before, .scroll-hint::after, .marquee-track, .tl-cursor::after { animation: none; }
+  .orb, .availability::before, .scroll-hint::after, .marquee-track, .tl-cursor::after, .hero-photo img { animation: none; }
   .term { transition: none; }
 }
 </style>
@@ -530,7 +552,8 @@ footer a:hover { color: var(--cyan); }
 </nav>
 
 <header class="hero" id="top">
-  <div class="wrap">
+  <div class="wrap hero-grid">
+  <div>
     <p class="hero-eyebrow" data-hero="1">Software Engineer · Boston, MA</p>
     <h1 class="hero-name" data-hero="2">Aditya<br /><span class="grad-text">Mitra</span></h1>
     <p class="hero-pitch" data-hero="3">I build <strong>full-stack web applications</strong>, <strong>RESTful APIs</strong>, and <strong>AI systems</strong> that hold up in production — 3 years at Tata Consultancy Services, M.S. from Northeastern University.</p>
@@ -552,6 +575,10 @@ footer a:hover { color: var(--cyan); }
         <svg viewBox="0 0 24 24"><path d="M12 12.71 1.15 5.24A2 2 0 0 1 3 4h18a2 2 0 0 1 1.85 1.24L12 12.71zM12 15.14 1 7.6V18a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V7.6l-11 7.54z"/></svg>
       </a>
     </div>
+  </div>
+  <div class="hero-photo" data-hero="6">
+    <img src="/images/aditya.jpg" alt="Aditya Mitra in a navy suit, sitting on stone steps" width="724" height="1086" fetchpriority="high" />
+  </div>
   </div>
   <div class="scroll-hint" aria-hidden="true">Scroll</div>
 </header>
