@@ -167,7 +167,7 @@ a { color: inherit; text-decoration: none; }
   transition: border-color .25s ease, box-shadow .25s ease, color .25s ease;
 }
 .nav-cta:hover { border-color: var(--violet); color: var(--violet-soft); box-shadow: 0 0 18px var(--glow-violet); }
-@media (max-width: 860px) { .nav-links { display: none; } .nav-cta { margin-left: auto; } }
+@media (max-width: 860px) { .nav-links { display: none; } .nav-term { margin-left: auto; } }
 
 /* ============ Hero ============ */
 .hero {
@@ -515,11 +515,86 @@ footer a:hover { color: var(--cyan); }
 .modal .p-links { margin-top: 1.8rem; }
 @media (max-width: 720px) { .modal { padding: 1.8rem 1.4rem; } }
 
+/* ============ CLI overlay ============ */
+.cli-overlay {
+  position: fixed; inset: 0; z-index: 300;
+  background: rgba(6, 6, 14, 0.72); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+  opacity: 0; visibility: hidden; transition: opacity .2s ease, visibility .2s ease;
+}
+.cli-overlay.open { opacity: 1; visibility: visible; }
+.cli {
+  width: 100%; max-width: 680px; height: min(440px, 72vh);
+  display: flex; flex-direction: column;
+  background: rgba(12, 12, 24, 0.96); border: 1px solid var(--border-strong); border-radius: 16px;
+  box-shadow: 0 0 50px rgba(139, 92, 246, .16), 0 30px 80px rgba(0, 0, 0, .6);
+  overflow: hidden;
+  transform: translateY(14px); transition: transform .25s var(--ease-spring);
+}
+.cli-overlay.open .cli { transform: none; }
+.cli .term-bar { flex-shrink: 0; }
+.cli-body { flex: 1; overflow-y: auto; padding: 1rem 1.2rem; font-family: var(--mono); font-size: .8rem; line-height: 1.85; }
+.cli-body a { color: var(--cyan); text-decoration: underline; text-underline-offset: 3px; }
+.cli-input-row {
+  display: flex; align-items: center; gap: .55rem;
+  padding: .75rem 1.2rem; border-top: 1px solid var(--border);
+  font-family: var(--mono); font-size: .8rem;
+}
+.cli-input-row::before { content: '$'; color: var(--cyan); }
+.cli-input { flex: 1; background: none; border: none; outline: none; color: var(--text); font-family: var(--mono); font-size: .8rem; }
+.nav-term {
+  font-family: var(--mono); font-size: .74rem; color: var(--text-3);
+  background: none; border: 1px solid var(--border); border-radius: 8px;
+  padding: .4rem .65rem; cursor: pointer;
+  transition: color .2s ease, border-color .2s ease;
+}
+.nav-term:hover { color: var(--cyan); border-color: rgba(34, 211, 238, .4); }
+
+/* ============ Pong ============ */
+.pong-overlay {
+  position: fixed; inset: 0; z-index: 320;
+  background: rgba(6, 6, 14, 0.8); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center; padding: 1.2rem;
+  opacity: 0; visibility: hidden; transition: opacity .2s ease, visibility .2s ease;
+}
+.pong-overlay.open { opacity: 1; visibility: visible; }
+.pong-box {
+  width: min(94vw, 780px);
+  background: var(--bg-2); border: 1px solid var(--border-strong); border-radius: 18px;
+  padding: .9rem 1rem 1rem;
+  box-shadow: 0 0 50px rgba(34, 211, 238, .12), 0 30px 80px rgba(0, 0, 0, .6);
+}
+.pong-head {
+  display: flex; align-items: center; gap: 1rem;
+  font-family: var(--mono); font-size: .72rem; color: var(--text-3);
+  padding: 0 .2rem .75rem;
+}
+.pong-head b { color: var(--text); font-weight: 500; }
+.pong-head button {
+  margin-left: auto; width: 30px; height: 30px; border-radius: 50%;
+  background: var(--glass-strong); border: 1px solid var(--border); color: var(--text);
+  cursor: pointer; font-size: .85rem;
+}
+.pong-head button:hover { background: var(--violet); color: #fff; }
+.pong-box canvas { width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid var(--border); background: #07070f; touch-action: none; }
+.pong-foot { font-family: var(--mono); font-size: .68rem; color: var(--text-3); text-align: center; padding-top: .7rem; }
+@media (max-width: 640px) { .pong-head span { display: none; } }
+
+/* ============ Fun bits ============ */
+.type-caret::after { content: '▋'; margin-left: 2px; color: var(--cyan); animation: blink 1.05s steps(1) infinite; }
+#pong-egg { cursor: pointer; transition: color .2s ease; }
+#pong-egg:hover { color: var(--cyan); }
+kbd {
+  font-family: var(--mono); font-size: .9em; color: var(--text-2);
+  border: 1px solid var(--border-strong); border-bottom-width: 2px; border-radius: 5px;
+  padding: 0 .35em;
+}
+
 /* ============ Reduced motion ============ */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal, .hero [data-hero] { opacity: 1; transform: none; transition: none; animation: none; }
-  .orb, .availability::before, .scroll-hint::after, .marquee-track, .tl-cursor::after, .hero-photo img { animation: none; }
+  .orb, .availability::before, .scroll-hint::after, .marquee-track, .tl-cursor::after, .hero-photo img, .type-caret::after { animation: none; }
   .term { transition: none; }
 }
 </style>
@@ -547,6 +622,7 @@ footer a:hover { color: var(--cyan); }
       <a href="#references">References</a>
       <a href="#contact">Contact</a>
     </div>
+    <button class="nav-term" id="term-open" aria-label="Open interactive terminal" title="Open terminal (or press `)">&gt;_</button>
     <a class="nav-cta" href="/Aditya_Mitra_Resume.pdf" target="_blank" rel="noopener">Resume ↗</a>
   </div>
 </nav>
@@ -554,7 +630,7 @@ footer a:hover { color: var(--cyan); }
 <header class="hero" id="top">
   <div class="wrap hero-grid">
   <div>
-    <p class="hero-eyebrow" data-hero="1">Software Engineer · Boston, MA</p>
+    <p class="hero-eyebrow" data-hero="1"><span id="role-cycler">Software Engineer</span><span class="type-caret" aria-hidden="true"></span>&nbsp;· Boston, MA</p>
     <h1 class="hero-name" data-hero="2">Aditya<br /><span class="grad-text">Mitra</span></h1>
     <p class="hero-pitch" data-hero="3">I build <strong>full-stack web applications</strong>, <strong>RESTful APIs</strong>, and <strong>AI systems</strong> that hold up in production — 3 years at Tata Consultancy Services, M.S. from Northeastern University.</p>
     <div class="hero-actions" data-hero="4">
@@ -607,7 +683,7 @@ footer a:hover { color: var(--cyan); }
             <li>Star of the Month — TCS</li>
             <li>Best Team Award — TCS</li>
             <li>Promoted to Systems Engineer</li>
-            <li>NCTTA Divisional Champion</li>
+            <li id="pong-egg" title="🏓 click me">NCTTA Divisional Champion</li>
           </ul>
         </aside>
       </div>
@@ -780,12 +856,37 @@ footer a:hover { color: var(--cyan); }
 <footer>
   <div class="wrap">
     <span>Designed &amp; built by Aditya Mitra</span>
+    <span>psst — press <kbd>`</kbd> for a terminal</span>
     <span>
       <a href="https://github.com/adityaamitra" target="_blank" rel="noopener">GitHub</a> ·
       <a href="https://www.linkedin.com/in/mitraditya23/" target="_blank" rel="noopener">LinkedIn</a>
     </span>
   </div>
 </footer>
+
+<!-- Interactive terminal -->
+<div class="cli-overlay" id="cli-overlay" role="dialog" aria-modal="true" aria-label="Interactive terminal">
+  <div class="cli">
+    <div class="term-bar"><i></i><i></i><i></i><b>aditya@portfolio — zsh</b></div>
+    <div class="cli-body" id="cli-body"></div>
+    <div class="cli-input-row">
+      <input class="cli-input" id="cli-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command input" />
+    </div>
+  </div>
+</div>
+
+<!-- Table-tennis easter egg -->
+<div class="pong-overlay" id="pong-overlay" role="dialog" aria-modal="true" aria-label="Table tennis mini-game">
+  <div class="pong-box">
+    <div class="pong-head">
+      <b>table-tennis.exe</b>
+      <span>you vs. an agent with 5,000 episodes of training · first to 5</span>
+      <button id="pong-close" aria-label="Close game">✕</button>
+    </div>
+    <canvas id="pong-canvas" width="720" height="440"></canvas>
+    <div class="pong-foot">move: mouse / ↑ ↓ / touch &nbsp;·&nbsp; R rematch &nbsp;·&nbsp; Esc quit</div>
+  </div>
+</div>
 
 <!-- Case-study modal -->
 <div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
@@ -1014,6 +1115,310 @@ document.getElementById('copy-email').addEventListener('click', function () {
     this.textContent = 'Copied ✓';
     setTimeout(() => { this.textContent = original; }, 1800);
   });
+});
+
+// ============ Cycling hero roles ============
+(function () {
+  const el = document.getElementById('role-cycler');
+  if (!el || REDUCED) return;
+  const ROLES = ['Software Engineer', 'Full-Stack Developer', 'AI Systems Builder', 'Table Tennis Champion'];
+  let ri = 0, ci = ROLES[0].length, deleting = true;
+  setTimeout(function tick() {
+    const word = ROLES[ri];
+    ci += deleting ? -1 : 1;
+    el.textContent = word.slice(0, ci);
+    let delay = deleting ? 36 : 68;
+    if (!deleting && ci === word.length) { deleting = true; delay = 2600; }
+    else if (deleting && ci === 0) { deleting = false; ri = (ri + 1) % ROLES.length; delay = 420; }
+    setTimeout(tick, delay);
+  }, 3400);
+})();
+
+// ============ Dev-tools greeting ============
+console.log(
+  '%c◆ aditya.mitra %cv2.0',
+  'background:linear-gradient(92deg,#a78bfa,#22d3ee);color:#0a0a14;font-weight:bold;padding:3px 8px;border-radius:4px 0 0 4px;',
+  'background:#1e1e32;color:#a4a4bd;padding:3px 8px;border-radius:0 4px 4px 0;'
+);
+console.log(
+  'You read console logs on portfolio sites. I respect that.\n' +
+  '→ source:   https://github.com/adityaamitra/Portfolio_Website\n' +
+  '→ hiring?   mitraditya23@gmail.com\n' +
+  '→ bored?    press ` to open the terminal, then type "pong"'
+);
+
+// ============ Table tennis (pong) ============
+const pongOverlay = document.getElementById('pong-overlay');
+const pongCanvas = document.getElementById('pong-canvas');
+
+const pong = (function () {
+  const W = 720, H = 440, PX = 22, PW = 10, PH = 82, BR = 7;
+  const ctx = pongCanvas.getContext('2d');
+  let s = null, raf = null;
+  const keys = {};
+
+  function serve(dir) {
+    s.bx = W / 2; s.by = H / 2;
+    const ang = (Math.random() * 0.5 - 0.25) * Math.PI;
+    s.vx = dir * 5.2 * Math.cos(ang); s.vy = 5.2 * Math.sin(ang);
+  }
+  function reset() {
+    s = { py: H / 2 - PH / 2, ay: H / 2 - PH / 2, bx: W / 2, by: H / 2, vx: 0, vy: 0, ps: 0, as: 0, over: false, msg: '' };
+    serve(Math.random() < 0.5 ? -1 : 1);
+  }
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+
+  function step() {
+    if (keys.ArrowUp) s.py -= 7.5;
+    if (keys.ArrowDown) s.py += 7.5;
+    s.py = clamp(s.py, 0, H - PH);
+
+    // The opponent: fast enough to feel trained, slow enough to lose
+    const target = s.vx > 0 ? s.by - PH / 2 : H / 2 - PH / 2;
+    s.ay = clamp(s.ay + clamp(target - s.ay, -4.1, 4.1), 0, H - PH);
+
+    s.bx += s.vx; s.by += s.vy;
+    if (s.by < BR) { s.by = BR; s.vy = Math.abs(s.vy); }
+    if (s.by > H - BR) { s.by = H - BR; s.vy = -Math.abs(s.vy); }
+
+    if (s.vx < 0 && s.bx - BR < PX + PW && s.bx > PX && s.by > s.py - BR && s.by < s.py + PH + BR) {
+      s.vx = Math.min(-s.vx * 1.06, 11);
+      s.vy += ((s.by - (s.py + PH / 2)) / (PH / 2)) * 2.6;
+    }
+    if (s.vx > 0 && s.bx + BR > W - PX - PW && s.bx < W - PX && s.by > s.ay - BR && s.by < s.ay + PH + BR) {
+      s.vx = Math.max(-s.vx * 1.06, -11);
+      s.vy += ((s.by - (s.ay + PH / 2)) / (PH / 2)) * 2.6;
+    }
+    if (s.bx < -30) { s.as++; s.as >= 5 ? end(false) : serve(1); }
+    if (s.bx > W + 30) { s.ps++; s.ps >= 5 ? end(true) : serve(-1); }
+  }
+
+  function end(won) {
+    s.over = true;
+    s.msg = won ? '🏆 NCTTA-level confirmed. gg.' : 'the agent trained 5,000 episodes for this.';
+  }
+
+  function draw() {
+    ctx.fillStyle = '#07070f'; ctx.fillRect(0, 0, W, H);
+    ctx.strokeStyle = 'rgba(148,148,190,.22)'; ctx.setLineDash([6, 10]);
+    ctx.beginPath(); ctx.moveTo(W / 2, 0); ctx.lineTo(W / 2, H); ctx.stroke(); ctx.setLineDash([]);
+    ctx.font = '500 30px "JetBrains Mono", monospace'; ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(167,139,250,.5)'; ctx.fillText(s.ps, W / 2 - 60, 46);
+    ctx.fillStyle = 'rgba(34,211,238,.5)'; ctx.fillText(s.as, W / 2 + 60, 46);
+    ctx.fillStyle = '#8b5cf6'; ctx.fillRect(PX, s.py, PW, PH);
+    ctx.fillStyle = '#22d3ee'; ctx.fillRect(W - PX - PW, s.ay, PW, PH);
+    ctx.fillStyle = '#ececf4';
+    ctx.beginPath(); ctx.arc(s.bx, s.by, BR, 0, Math.PI * 2); ctx.fill();
+    if (s.over) {
+      ctx.fillStyle = 'rgba(7,7,15,.72)'; ctx.fillRect(0, 0, W, H);
+      ctx.fillStyle = '#ececf4'; ctx.font = '600 22px "Space Grotesk", sans-serif';
+      ctx.fillText(s.msg, W / 2, H / 2 - 8);
+      ctx.fillStyle = '#71718e'; ctx.font = '13px "JetBrains Mono", monospace';
+      ctx.fillText('press R for a rematch · Esc to quit', W / 2, H / 2 + 24);
+    }
+  }
+
+  function loop() { if (!s.over) step(); draw(); raf = requestAnimationFrame(loop); }
+
+  function pointerMove(clientY) {
+    const r = pongCanvas.getBoundingClientRect();
+    s.py = clamp((clientY - r.top) * (H / r.height) - PH / 2, 0, H - PH);
+  }
+  pongCanvas.addEventListener('mousemove', e => { if (s) pointerMove(e.clientY); });
+  pongCanvas.addEventListener('touchmove', e => { if (s) { e.preventDefault(); pointerMove(e.touches[0].clientY); } }, { passive: false });
+
+  function onKey(e) {
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') { keys[e.key] = e.type === 'keydown'; e.preventDefault(); }
+    if (e.type === 'keydown' && (e.key === 'r' || e.key === 'R') && s && s.over) reset();
+  }
+
+  return {
+    open() {
+      pongOverlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      document.addEventListener('keydown', onKey);
+      document.addEventListener('keyup', onKey);
+      reset(); if (!raf) loop();
+    },
+    close() {
+      pongOverlay.classList.remove('open');
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('keyup', onKey);
+      cancelAnimationFrame(raf); raf = null; s = null;
+    },
+    isOpen: () => pongOverlay.classList.contains('open'),
+  };
+})();
+
+document.getElementById('pong-close').addEventListener('click', pong.close);
+document.getElementById('pong-egg').addEventListener('click', pong.open);
+
+// Konami code → pong
+(function () {
+  const SEQ = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+  let i = 0;
+  document.addEventListener('keydown', e => {
+    i = e.key === SEQ[i] ? i + 1 : (e.key === SEQ[0] ? 1 : 0);
+    if (i === SEQ.length) { i = 0; if (!pong.isOpen()) pong.open(); }
+  });
+})();
+
+// ============ Interactive terminal ============
+const cliOverlay = document.getElementById('cli-overlay');
+const cliBody = document.getElementById('cli-body');
+const cliInput = document.getElementById('cli-input');
+let cliBooted = false;
+const cliHistory = []; let histIdx = -1;
+
+function cliPrint(html, cls) {
+  const div = document.createElement('div');
+  if (cls) div.className = cls;
+  div.innerHTML = html;
+  cliBody.appendChild(div);
+  cliBody.scrollTop = cliBody.scrollHeight;
+}
+function cliEcho(cmd) {
+  const div = document.createElement('div');
+  div.className = 'tl-cmd';
+  div.textContent = cmd;
+  cliBody.appendChild(div);
+}
+function cliOpen() {
+  cliOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  if (!cliBooted) {
+    cliBooted = true;
+    cliPrint('aditya.mitra terminal — v2.0', 'tl-star');
+    cliPrint("type <span class='tl-hint'>help</span> to get started.", 'tl-out');
+  }
+  setTimeout(() => cliInput.focus(), 60);
+}
+function cliClose() {
+  cliOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+const SECTIONS = ['about', 'experience', 'projects', 'skills', 'references', 'contact'];
+
+function cliRun(raw) {
+  const input = raw.trim();
+  if (!input) return;
+  cliEcho(input);
+  const [cmd, ...rest] = input.toLowerCase().split(/\s+/);
+  const arg = rest.join(' ');
+
+  switch (cmd) {
+    case 'help':
+      cliPrint(
+        "<span class='tl-hint'>whoami</span>        who is this guy<br>" +
+        "<span class='tl-hint'>projects</span>      list shipped projects<br>" +
+        "<span class='tl-hint'>open &lt;n&gt;</span>      open project n on github<br>" +
+        "<span class='tl-hint'>skills</span>        tech stack<br>" +
+        "<span class='tl-hint'>resume</span>        open the resume pdf<br>" +
+        "<span class='tl-hint'>contact</span>       email me<br>" +
+        "<span class='tl-hint'>cd &lt;section&gt;</span>  jump to a section<br>" +
+        "<span class='tl-hint'>pong</span>          🏓 you'll see<br>" +
+        "<span class='tl-hint'>clear</span> · <span class='tl-hint'>exit</span><br>" +
+        "<span class='tl-out'>(try: sudo hire-me)</span>", 'tl-out');
+      break;
+    case 'whoami':
+      cliPrint('aditya mitra — software engineer, boston MA.<br>3y @ TCS (core banking, promoted) · M.S. @ Northeastern.<br>builds full-stack apps and AI systems that hold up in production.', 'tl-out');
+      break;
+    case 'ls':
+      cliPrint(SECTIONS.map(x => x + '/').join('&nbsp;&nbsp;') + '&nbsp;&nbsp;resume.pdf', 'tl-out');
+      break;
+    case 'projects':
+      if (!PROJECTS.length) { cliPrint('still cloning… try again in a second.', 'tl-out'); break; }
+      PROJECTS.forEach((p, i) => cliPrint(`${i + 1}. <span class='tl-star'>${esc(p.title)}</span> — ${esc(p.period)}`, 'tl-out'));
+      cliPrint("use <span class='tl-hint'>open &lt;n&gt;</span> to view one on github.", 'tl-out');
+      break;
+    case 'open': {
+      const p = PROJECTS[parseInt(arg, 10) - 1];
+      if (p && p.repo) { cliPrint('opening ' + esc(p.title) + '…', 'tl-ok'); window.open(p.repo, '_blank'); }
+      else cliPrint("open which? run <span class='tl-hint'>projects</span> first.", 'tl-out');
+      break;
+    }
+    case 'skills':
+      cliPrint('python · typescript · react · fastapi · flask · pytorch<br>rag · multi-agent systems · lora/peft · docker · aws · elk', 'tl-out');
+      break;
+    case 'resume':
+    case 'cat':
+      if (cmd === 'cat' && arg !== 'resume.pdf') { cliPrint("cat: " + esc(arg || '?') + ": permission denied (it's a portfolio, not a filesystem)", 'tl-out'); break; }
+      cliPrint('opening resume…', 'tl-ok'); window.open('/Aditya_Mitra_Resume.pdf', '_blank');
+      break;
+    case 'contact':
+    case 'email':
+      navigator.clipboard && navigator.clipboard.writeText('mitraditya23@gmail.com');
+      cliPrint("<a href='mailto:mitraditya23@gmail.com'>mitraditya23@gmail.com</a> — copied to clipboard ✓", 'tl-ok');
+      break;
+    case 'cd': {
+      const target = arg.replace(/\/$/, '');
+      if (SECTIONS.includes(target)) {
+        cliPrint('cd ' + target + '/', 'tl-ok');
+        cliClose();
+        document.getElementById(target).scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth' });
+      } else if (target === '' || target === '/' || target === '~') {
+        cliClose(); window.scrollTo({ top: 0, behavior: REDUCED ? 'auto' : 'smooth' });
+      } else cliPrint('cd: no such directory: ' + esc(target), 'tl-out');
+      break;
+    }
+    case 'sudo':
+      if (arg === 'hire-me' || arg === 'hire me') {
+        cliPrint('[sudo] password for recruiter: ********', 'tl-out');
+        setTimeout(() => cliPrint('access granted. opening inbox…', 'tl-ok'), 700);
+        setTimeout(() => { window.location.href = 'mailto:mitraditya23@gmail.com?subject=Let%27s%20talk'; }, 1500);
+      } else cliPrint('nice try. this incident will be reported (to my inbox).', 'tl-out');
+      break;
+    case 'pong':
+    case 'pingpong':
+    case 'table-tennis':
+      cliPrint('spinning up the opponent… 🏓', 'tl-ok');
+      setTimeout(() => { cliClose(); pong.open(); }, 500);
+      break;
+    case 'hello':
+    case 'hi':
+    case 'hey':
+      cliPrint('hey 👋', 'tl-out');
+      break;
+    case 'clear':
+      cliBody.innerHTML = '';
+      break;
+    case 'exit':
+    case 'quit':
+    case 'q':
+      cliClose();
+      break;
+    default:
+      cliPrint('command not found: ' + esc(cmd) + " — try <span class='tl-hint'>help</span>", 'tl-out');
+  }
+}
+
+cliInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const v = cliInput.value;
+    if (v.trim()) { cliHistory.push(v); histIdx = cliHistory.length; }
+    cliInput.value = '';
+    cliRun(v);
+  } else if (e.key === 'ArrowUp') {
+    if (histIdx > 0) { histIdx--; cliInput.value = cliHistory[histIdx]; e.preventDefault(); }
+  } else if (e.key === 'ArrowDown') {
+    if (histIdx < cliHistory.length - 1) { histIdx++; cliInput.value = cliHistory[histIdx]; }
+    else { histIdx = cliHistory.length; cliInput.value = ''; }
+  }
+});
+cliOverlay.addEventListener('click', e => { if (e.target === cliOverlay) cliClose(); });
+document.getElementById('term-open').addEventListener('click', cliOpen);
+
+document.addEventListener('keydown', e => {
+  if (e.key === '`' && !cliOverlay.classList.contains('open') && !pong.isOpen()
+      && !/^(INPUT|TEXTAREA)$/.test(e.target.tagName)) {
+    e.preventDefault(); cliOpen();
+  }
+  if (e.key === 'Escape') {
+    if (pong.isOpen()) pong.close();
+    else if (cliOverlay.classList.contains('open')) cliClose();
+  }
 });
 </script>
 </body>
