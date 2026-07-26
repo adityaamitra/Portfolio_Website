@@ -1,4 +1,25 @@
 <!DOCTYPE html>
+<!--
+
+    ┌───────────────────────────────────────────────┐
+    │                                               │
+    │        ◢◆◣                                    │
+    │       ◢◆◆◆◣     aditya.mitra                  │
+    │        ◥◆◤      software engineer, boston     │
+    │                                               │
+    │    built by hand: one html file,              │
+    │    no frameworks, no build step.              │
+    │                                               │
+    │    you're reading the source.                 │
+    │    i like you already.                        │
+    │    say hi: mitraditya23@gmail.com             │
+    │                                               │
+    │    (psst: press ` on the page, then           │
+    │     type pong. bring a paddle.)               │
+    │                                               │
+    └───────────────────────────────────────────────┘
+
+-->
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -302,6 +323,10 @@ section { padding: 7rem 0 3rem; scroll-margin-top: 3.5rem; }
 }
 .about-side li:last-child { border-bottom: none; }
 .about-side li::before { content: '◆'; font-size: .55rem; color: var(--cyan); }
+.last-commit { margin-top: 1.1rem; font-family: var(--mono); font-size: .68rem; color: var(--text-3); }
+.last-commit:empty { display: none; }
+.last-commit a { color: var(--cyan); }
+.last-commit a:hover { text-decoration: underline; text-underline-offset: 3px; }
 @media (max-width: 860px) { .about-grid { grid-template-columns: 1fr; gap: 2rem; } }
 
 /* ============ Experience ============ */
@@ -548,6 +573,7 @@ footer a:hover { color: var(--cyan); }
 }
 .cli-input-row::before { content: '$'; color: var(--cyan); }
 .cli-input { flex: 1; background: none; border: none; outline: none; color: var(--text); font-family: var(--mono); font-size: .8rem; }
+.cli-pre { white-space: pre; line-height: 1.4; color: var(--text-2); }
 .nav-term {
   font-family: var(--mono); font-size: .74rem; color: var(--cyan);
   background: rgba(34, 211, 238, .08); border: 1px solid rgba(34, 211, 238, .45); border-radius: 8px;
@@ -720,6 +746,7 @@ kbd {
             <li>Promoted to Systems Engineer</li>
             <li id="pong-egg" title="🏓 click me">NCTTA Divisional Champion</li>
           </ul>
+          <div class="last-commit" id="last-commit"></div>
         </aside>
       </div>
     </div>
@@ -1154,12 +1181,12 @@ document.getElementById('copy-email').addEventListener('click', function () {
 });
 
 // ============ Visitor counter ============
+const ABACUS = 'https://abacus.jasoncameron.dev';
 (function () {
   const el = document.getElementById('visitor-count');
-  const base = 'https://abacus.jasoncameron.dev';
   const path = '/adityamitra-vercel-app/visits';
   const counted = sessionStorage.getItem('counted');
-  fetch(base + (counted ? '/get' : '/hit') + path)
+  fetch(ABACUS + (counted ? '/get' : '/hit') + path)
     .then(r => r.json())
     .then(d => {
       const n = Number(d.value);
@@ -1169,6 +1196,19 @@ document.getElementById('copy-email').addEventListener('click', function () {
     })
     .catch(() => {});
 })();
+
+// ============ Last push (GitHub) ============
+fetch('https://api.github.com/users/adityaamitra/repos?sort=pushed&per_page=1')
+  .then(r => r.json())
+  .then(list => {
+    const repo = Array.isArray(list) && list[0];
+    if (!repo || !repo.pushed_at) return;
+    const mins = Math.max(1, Math.round((Date.now() - new Date(repo.pushed_at)) / 60000));
+    const ago = mins < 60 ? mins + 'm' : mins < 1440 ? Math.round(mins / 60) + 'h' : Math.round(mins / 1440) + 'd';
+    document.getElementById('last-commit').innerHTML =
+      '⌥ last push: <a href="' + esc(repo.html_url) + '" target="_blank" rel="noopener">' + esc(repo.name) + '</a> · ' + ago + ' ago';
+  })
+  .catch(() => {});
 
 // ============ Cycling hero roles ============
 (function () {
@@ -1249,6 +1289,17 @@ const pong = (function () {
   function end(won) {
     s.over = true;
     s.msg = won ? '🏆 NCTTA-level confirmed. gg.' : 'the agent trained 5,000 episodes for this.';
+    const mine = won ? 'pong-human' : 'pong-agent';
+    const theirs = won ? 'pong-agent' : 'pong-human';
+    const val = d => { const n = Number(d && d.value); return isFinite(n) ? n : 0; };
+    Promise.all([
+      fetch(ABACUS + '/hit/adityamitra-vercel-app/' + mine).then(r => r.json()).catch(() => null),
+      fetch(ABACUS + '/get/adityamitra-vercel-app/' + theirs).then(r => r.json()).catch(() => null),
+    ]).then(([a, b]) => {
+      const human = val(won ? a : b);
+      const agent = val(won ? b : a);
+      if (s && s.over) s.board = 'all-time: humanity ' + human + ' · the agent ' + agent;
+    }).catch(() => {});
   }
 
   function draw() {
@@ -1268,6 +1319,10 @@ const pong = (function () {
       ctx.fillText(s.msg, W / 2, H / 2 - 8);
       ctx.fillStyle = '#71718e'; ctx.font = '13px "JetBrains Mono", monospace';
       ctx.fillText('press R for a rematch · Esc to quit', W / 2, H / 2 + 24);
+      if (s.board) {
+        ctx.fillStyle = '#a78bfa'; ctx.font = '14px "JetBrains Mono", monospace';
+        ctx.fillText(s.board, W / 2, H / 2 + 58);
+      }
     }
   }
 
@@ -1306,6 +1361,42 @@ const pong = (function () {
 
 document.getElementById('pong-close').addEventListener('click', pong.close);
 document.getElementById('pong-egg').addEventListener('click', pong.open);
+
+// ============ Matrix rain ============
+function matrixRain() {
+  const c = document.createElement('canvas');
+  c.style.cssText = 'position:fixed;inset:0;z-index:400;background:#06060e;cursor:pointer';
+  c.width = innerWidth; c.height = innerHeight;
+  c.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(c);
+  const ctx = c.getContext('2d');
+  const fs = 16, cols = Math.ceil(c.width / fs);
+  const drops = Array.from({ length: cols }, () => Math.random() * -40);
+  const chars = 'アカサタナハマヤラワ0123456789ABCDEF<>{}[]$#*+=◆';
+  let raf, done = false;
+  (function loop() {
+    ctx.fillStyle = 'rgba(6,6,14,.08)'; ctx.fillRect(0, 0, c.width, c.height);
+    ctx.font = fs + 'px monospace';
+    for (let i = 0; i < cols; i++) {
+      ctx.fillStyle = Math.random() < .08 ? '#22d3ee' : '#8b5cf6';
+      ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * fs, drops[i] * fs);
+      drops[i] = drops[i] * fs > c.height && Math.random() > .975 ? 0 : drops[i] + 1;
+    }
+    raf = requestAnimationFrame(loop);
+  })();
+  function stop() {
+    if (done) return;
+    done = true;
+    cancelAnimationFrame(raf);
+    c.remove();
+    document.removeEventListener('keydown', stop);
+  }
+  setTimeout(() => {
+    c.addEventListener('click', stop);
+    document.addEventListener('keydown', stop);
+  }, 400);
+  setTimeout(stop, 14000);
+}
 
 // Konami code → pong
 (function () {
@@ -1372,7 +1463,10 @@ function cliRun(raw) {
         "<span class='tl-hint'>contact</span>       email me<br>" +
         "<span class='tl-hint'>cd &lt;section&gt;</span>  jump to a section<br>" +
         "<span class='tl-hint'>pong</span>          🏓 you'll see<br>" +
-        "<span class='tl-hint'>clear</span> · <span class='tl-hint'>exit</span><br>" +
+        "<span class='tl-hint'>fortune</span>       engineering wisdom<br>" +
+        "<span class='tl-hint'>coffee</span>        essential infrastructure<br>" +
+        "<span class='tl-hint'>matrix</span>        follow the white rabbit<br>" +
+        "<span class='tl-hint'>clear</span> · <span class='tl-hint'>exit</span> · <span class='tl-hint'>history</span><br>" +
         "<span class='tl-out'>(try: sudo hire-me)</span>", 'tl-out');
       break;
     case 'whoami':
@@ -1428,6 +1522,44 @@ function cliRun(raw) {
     case 'table-tennis':
       cliPrint('spinning up the opponent… 🏓', 'tl-ok');
       setTimeout(() => { cliClose(); pong.open(); }, 500);
+      break;
+    case 'fortune': {
+      const F = [
+        'weeks of coding can save you hours of planning.',
+        'there are two hard problems in CS: cache invalidation, naming things, and off-by-one errors.',
+        '99 little bugs in the code. take one down, patch it around. 127 little bugs in the code.',
+        'it works on my machine. (machine sold separately)',
+        'a good error message is worth a thousand log lines.',
+        'the best code is no code. the second best is deleted code.',
+        "hofstadter's law: it always takes longer than you expect, even when you account for hofstadter's law.",
+        'real engineers test in production. great ones have a rollback plan.',
+      ];
+      cliPrint(esc(F[Math.floor(Math.random() * F.length)]), 'tl-hint');
+      break;
+    }
+    case 'coffee':
+      cliPrint(
+        '      ) )\n' +
+        '     ( (\n' +
+        '   ........\n' +
+        '   |      |]\n' +
+        '   \\      /\n' +
+        "   `····´", 'cli-pre');
+      cliPrint('brewing…', 'tl-out');
+      setTimeout(() => cliPrint('☕ ready. back to work.', 'tl-ok'), 900);
+      break;
+    case 'matrix':
+      if (REDUCED) { cliPrint('reduced motion is on. no rain today.', 'tl-out'); break; }
+      cliPrint('wake up…', 'tl-ok');
+      setTimeout(() => { cliClose(); matrixRain(); }, 600);
+      break;
+    case 'history':
+      if (cliHistory.length <= 1) { cliPrint('no history yet. you just got here.', 'tl-out'); break; }
+      cliHistory.slice(0, -1).forEach((h, i) => cliPrint((i + 1) + '  ' + esc(h), 'tl-out'));
+      break;
+    case 'whois':
+      if (arg === 'recruiter') cliPrint('access level: VIP. proceed directly to <span class=\'tl-hint\'>contact</span>.', 'tl-ok');
+      else cliPrint("whois: unknown entity. try <span class='tl-hint'>whois recruiter</span>", 'tl-out');
       break;
     case 'hello':
     case 'hi':
