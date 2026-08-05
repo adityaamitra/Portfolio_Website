@@ -622,6 +622,159 @@ kbd {
   padding: 0 .35em;
 }
 
+/* ============ Motion & delight ============ */
+@property --ang { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+
+/* Living gradient text */
+.grad-text, .metric-value {
+  background-image: linear-gradient(92deg, var(--violet-soft), var(--cyan), var(--violet-soft));
+  background-size: 220% 100%;
+  animation: grad-shift 7s ease-in-out infinite alternate;
+}
+@keyframes grad-shift { from { background-position: 0% 50% } to { background-position: 100% 50% } }
+
+/* Hero name: letter-by-letter entrance (JS splits the characters) */
+.hero-name.split { opacity: 1; transform: none; animation: none; }
+.hero-name.split .char {
+  display: inline-block; white-space: pre;
+  opacity: 0; transform: translateY(.45em) rotate(5deg);
+  animation: char-in .8s var(--ease-spring) forwards;
+  animation-delay: calc(var(--i) * 42ms + .12s);
+}
+/* Gradient words stay whole — background-clip: text won't paint through
+   inline-block children — so they rise as one piece on the same beat. */
+.hero-name.split .char-block {
+  display: inline-block;
+  opacity: 0; transform: translateY(.45em);
+  animation: char-in .9s var(--ease-spring) forwards;
+  animation-delay: calc(var(--i) * 42ms + .18s);
+}
+@keyframes char-in { to { opacity: 1; transform: none } }
+
+/* Section titles decode into place */
+.sec-title .scr { color: var(--violet-soft); opacity: .6; }
+
+/* A light travels around the hero photo */
+.hero-photo::before {
+  background: conic-gradient(from var(--ang), transparent, var(--violet) 18%, var(--cyan) 32%, transparent 52%, transparent);
+  animation: spin-ang 9s linear infinite;
+}
+@keyframes spin-ang { to { --ang: 360deg } }
+.hero-photo img { transition: box-shadow .45s ease, filter .45s ease; }
+.hero-photo:hover img { box-shadow: 0 30px 80px rgba(0,0,0,.55), 0 0 90px rgba(139,92,246,.32); filter: saturate(1.06); }
+
+/* Pointer spotlight on cards */
+.skill-group, .ref-card, .about-side { position: relative; }
+.skill-group::after, .ref-card::after, .about-side::after, .resume-band::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(300px circle at var(--cx, 50%) var(--cy, 0), rgba(139,92,246,.15), transparent 70%);
+  opacity: 0; transition: opacity .35s ease;
+}
+.skill-group:hover::after, .ref-card:hover::after, .about-side:hover::after, .resume-band:hover::after { opacity: 1; }
+.about-side { transition: border-color .3s ease; }
+.about-side:hover { border-color: var(--border-strong); }
+
+/* Buttons: shine sweep + click ripple */
+.btn, .nav-cta, .nav-term { position: relative; overflow: hidden; }
+.btn::after {
+  content: ''; position: absolute; top: 0; bottom: 0; left: -40%; width: 40%; pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.3), transparent);
+  transform: translateX(0) skewX(-16deg); opacity: 0;
+}
+.btn:hover::after { animation: shine .85s ease-out; }
+@keyframes shine {
+  0% { opacity: 0; transform: translateX(0) skewX(-16deg) }
+  15% { opacity: 1 }
+  100% { opacity: 0; transform: translateX(400%) skewX(-16deg) }
+}
+.ripple {
+  position: absolute; left: 0; top: 0; width: 14px; height: 14px; border-radius: 50%;
+  background: currentColor; opacity: .32; pointer-events: none;
+  transform: translate(-50%, -50%) scale(0);
+  animation: ripple .65s ease-out forwards;
+}
+@keyframes ripple { to { transform: translate(-50%, -50%) scale(13); opacity: 0 } }
+
+/* The timeline draws itself as you scroll */
+.timeline::after {
+  content: ''; position: absolute; left: 6px; top: 8px; bottom: 8px; width: 1px;
+  background: linear-gradient(180deg, var(--violet-soft), var(--cyan));
+  box-shadow: 0 0 12px var(--glow-violet);
+  transform: scaleY(var(--tp, 0)); transform-origin: top center;
+}
+.xp.in::before { animation: dot-pop .65s var(--ease-spring) .08s backwards; }
+@keyframes dot-pop { 0% { opacity: 0; transform: scale(.2) } 62% { opacity: 1; transform: scale(1.4) } 100% { opacity: 1; transform: scale(1) } }
+
+/* Project terminals type themselves out */
+.term-body.type-in > div {
+  clip-path: inset(0 100% 0 0);
+  animation: wipe var(--dur, .5s) steps(var(--n, 24)) var(--delay, 0s) forwards;
+}
+@keyframes wipe { to { clip-path: inset(0 -.3em 0 0) } }
+.term-body.type-in > .tl-cursor { clip-path: none; opacity: 0; animation: fade-in .3s ease var(--delay, 0s) forwards; }
+@keyframes fade-in { to { opacity: 1 } }
+
+/* Chips react to the pointer */
+.tag, .skill { transition: transform .25s var(--ease-spring), border-color .25s ease, color .25s ease; }
+.tag:hover { transform: translateY(-2px); border-color: rgba(139,92,246,.55); color: #fff; }
+.skill:hover { transform: translateY(-2px); border-color: rgba(34,211,238,.5); color: var(--text); }
+.marquee-track span { transition: color .25s ease; }
+.marquee-track span:hover { color: var(--violet-soft); }
+
+/* Staggered pop-in for chips and the highlights list */
+.skill-group.in .skill, .about-side.in li { animation: pop-in .5s var(--ease-spring) backwards; }
+@keyframes pop-in { from { opacity: 0; transform: translateY(10px) scale(.95) } }
+.skill-group.in .skill:nth-child(1), .about-side.in li:nth-child(1) { animation-delay: .08s }
+.skill-group.in .skill:nth-child(2), .about-side.in li:nth-child(2) { animation-delay: .13s }
+.skill-group.in .skill:nth-child(3), .about-side.in li:nth-child(3) { animation-delay: .18s }
+.skill-group.in .skill:nth-child(4), .about-side.in li:nth-child(4) { animation-delay: .23s }
+.skill-group.in .skill:nth-child(5) { animation-delay: .28s }
+.skill-group.in .skill:nth-child(6) { animation-delay: .33s }
+.skill-group.in .skill:nth-child(7) { animation-delay: .38s }
+.skill-group.in .skill:nth-child(8) { animation-delay: .43s }
+
+/* Small signs of life */
+#progress { box-shadow: 0 0 12px rgba(139,92,246,.65); }
+.nav-links a { position: relative; }
+.nav-links a::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -6px; height: 1px;
+  background: var(--grad); transform: scaleX(0); transform-origin: left;
+  transition: transform .3s var(--ease-spring);
+}
+.nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+.logo { display: inline-block; }
+.logo:hover { animation: glitch .45s steps(3) 1; }
+@keyframes glitch {
+  0%, 100% { text-shadow: none }
+  25% { text-shadow: -2px 0 var(--cyan), 2px 0 var(--violet-soft) }
+  70% { text-shadow: 2px 0 var(--violet-soft), -2px 0 var(--cyan) }
+}
+.availability { position: relative; }
+.availability::after {
+  content: ''; position: absolute; left: 1rem; top: 50%; width: 7px; height: 7px; margin-top: -3.5px;
+  border-radius: 50%; pointer-events: none; animation: ping 2.6s ease-out infinite;
+}
+@keyframes ping { 0% { box-shadow: 0 0 0 0 rgba(34,211,238,.5) } 70%, 100% { box-shadow: 0 0 0 13px rgba(34,211,238,0) } }
+.icon-link { transition: color .2s ease, transform .25s var(--ease-spring), border-color .2s ease, background-color .2s ease, box-shadow .3s ease; }
+.icon-link:hover { box-shadow: 0 12px 26px rgba(139,92,246,.2); }
+.plink { position: relative; }
+.plink::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -3px; height: 1px; background: currentColor;
+  transform: scaleX(0); transform-origin: left; transition: transform .28s var(--ease-spring);
+}
+.plink:hover::after { transform: scaleX(1); }
+
+/* Click sparks */
+.spark {
+  position: fixed; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--c, var(--violet-soft)); pointer-events: none; z-index: 500;
+  animation: spark .8s ease-out forwards;
+}
+@keyframes spark {
+  from { transform: translate(-50%, -50%) scale(1); opacity: 1 }
+  to { transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, 0px))) scale(.25); opacity: 0 }
+}
+
 /* ============ Mobile ============ */
 @media (max-width: 640px) {
   .wrap { padding: 0 1.3rem; }
@@ -655,7 +808,13 @@ kbd {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal, .hero [data-hero] { opacity: 1; transform: none; transition: none; animation: none; }
-  .orb, .availability::before, .scroll-hint::after, .marquee-track, .tl-cursor::after, .hero-photo img, .type-caret::after { animation: none; }
+  .orb, .availability::before, .scroll-hint::after, .marquee-track, .tl-cursor::after, .hero-photo img, .type-caret::after,
+  .availability::after, .hero-photo::before, .grad-text, .metric-value, .logo:hover, .btn:hover::after,
+  .skill-group.in .skill, .about-side.in li, .xp.in::before { animation: none; }
+  .grad-text, .metric-value { background-image: var(--grad); background-size: auto; }
+  .hero-name.split .char, .hero-name.split .char-block { animation: none; opacity: 1; transform: none; }
+  .term-body.type-in > div { clip-path: none; animation: none; }
+  .timeline::after, .spark { display: none; }
   .term { transition: none; }
 }
 </style>
@@ -692,7 +851,7 @@ kbd {
   <div class="wrap hero-grid">
   <div>
     <p class="hero-eyebrow" data-hero="1"><span id="role-cycler">Software Engineer</span><span class="type-caret" aria-hidden="true"></span>&nbsp;· Boston, MA</p>
-    <h1 class="hero-name" data-hero="2">Aditya<br /><span class="grad-text">Mitra</span></h1>
+    <h1 class="hero-name" data-hero="2" aria-label="Aditya Mitra">Aditya<br /><span class="grad-text">Mitra</span></h1>
     <p class="hero-pitch" data-hero="3">I build <strong>full-stack web applications</strong>, <strong>RESTful APIs</strong>, and <strong>AI systems</strong> that hold up in production. 3 years at Tata Consultancy Services, M.S. from Northeastern University.</p>
     <div class="hero-actions" data-hero="4">
       <a class="btn btn-solid" href="#projects">View projects
@@ -977,16 +1136,29 @@ if (FINE_POINTER) {
   }, { passive: true });
 }
 
-// ============ Nav: scrolled state + progress bar ============
+// ============ Nav: scrolled state + progress bar + timeline fill ============
 const nav = document.getElementById('nav');
 const progress = document.getElementById('progress');
-function onScroll() {
+const timelines = [...document.querySelectorAll('.timeline')];
+let scrollQueued = false;
+
+function paintScroll() {
+  scrollQueued = false;
   nav.classList.toggle('scrolled', window.scrollY > 24);
   const max = document.documentElement.scrollHeight - window.innerHeight;
   progress.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+  // The timeline's gradient line grows to meet whatever you're reading.
+  const mark = window.innerHeight * 0.72;
+  timelines.forEach(t => {
+    const r = t.getBoundingClientRect();
+    const p = Math.max(0, Math.min(1, (mark - r.top) / (r.height || 1)));
+    t.style.setProperty('--tp', p.toFixed(3));
+  });
 }
+function onScroll() { if (!scrollQueued) { scrollQueued = true; requestAnimationFrame(paintScroll); } }
 document.addEventListener('scroll', onScroll, { passive: true });
-onScroll();
+window.addEventListener('resize', onScroll, { passive: true });
+paintScroll();
 
 // ============ Marquee: duplicate track for seamless loop ============
 const track = document.getElementById('marquee-track');
@@ -997,6 +1169,121 @@ const revealObserver = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); revealObserver.unobserve(e.target); } });
 }, { threshold: 0.08 });
 document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// ============ Hero name: split into letters so they rise one by one ============
+(function () {
+  if (REDUCED) return;
+  const h1 = document.querySelector('.hero-name');
+  if (!h1) return;
+  let i = 0;
+  (function split(el) {
+    [...el.childNodes].forEach(node => {
+      if (node.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        for (const ch of node.textContent) {
+          const span = document.createElement('span');
+          span.className = 'char';
+          span.style.setProperty('--i', i++);
+          span.textContent = ch;
+          frag.appendChild(span);
+        }
+        el.replaceChild(frag, node);
+      } else if (node.classList && node.classList.contains('grad-text')) {
+        node.classList.add('char-block');       // gradient fill can't survive a split
+        node.style.setProperty('--i', i++);
+      } else if (node.nodeType === 1 && node.tagName !== 'BR') {
+        split(node);
+      }
+    });
+  })(h1);
+  h1.classList.add('split');
+})();
+
+// ============ Section titles decode into place ============
+const GLYPHS = '#%&/<>[]{}=+*?01アカサタナハマ◆';
+function decode(el) {
+  const text = el.textContent, n = text.length;
+  el.style.minWidth = el.offsetWidth + 'px';   // hold the layout steady while the glyphs churn
+  const dur = 280 + n * 32, t0 = performance.now();
+  (function tick(t) {
+    const p = Math.min((t - t0) / dur, 1);
+    const settled = Math.floor(p * n);
+    let noise = '';
+    for (let j = settled; j < n; j++) noise += text[j] === ' ' ? ' ' : GLYPHS[(Math.random() * GLYPHS.length) | 0];
+    el.innerHTML = esc(text.slice(0, settled)) + (noise ? `<span class="scr">${esc(noise)}</span>` : '');
+    if (p < 1) requestAnimationFrame(tick);
+    else { el.textContent = text; el.style.minWidth = ''; }
+  })(t0);
+}
+if (!REDUCED) {
+  const decodeObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { decodeObserver.unobserve(e.target); decode(e.target); } });
+  }, { threshold: 0.6 });
+  document.querySelectorAll('.sec-title').forEach(el => decodeObserver.observe(el));
+}
+
+// ============ Project terminals type themselves out ============
+function typeTerminal(body) {
+  let delay = 0.12;
+  [...body.children].forEach(line => {
+    if (line.classList.contains('tl-cursor')) { line.style.setProperty('--delay', delay.toFixed(2) + 's'); return; }
+    const n = Math.max(6, line.textContent.length + (line.classList.contains('tl-cmd') ? 2 : 0)); // '$ ' prompt
+    const dur = n * 0.01;
+    line.style.setProperty('--n', n);
+    line.style.setProperty('--dur', dur.toFixed(2) + 's');
+    line.style.setProperty('--delay', delay.toFixed(2) + 's');
+    delay += dur + 0.05;
+  });
+  body.classList.add('type-in');
+}
+const termObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { termObserver.unobserve(e.target); typeTerminal(e.target); } });
+}, { threshold: 0.3 });
+
+// ============ Pointer spotlight inside cards ============
+if (FINE_POINTER) {
+  const SPOTLIT = '.skill-group, .ref-card, .about-side, .resume-band';
+  document.addEventListener('pointermove', e => {
+    const card = e.target instanceof Element && e.target.closest(SPOTLIT);
+    if (!card) return;
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--cx', (e.clientX - r.left) + 'px');
+    card.style.setProperty('--cy', (e.clientY - r.top) + 'px');
+  }, { passive: true });
+}
+
+// ============ Ripple on press ============
+if (!REDUCED) {
+  document.querySelectorAll('.btn, .nav-cta, .nav-term').forEach(el => {
+    el.addEventListener('pointerdown', e => {
+      const r = el.getBoundingClientRect();
+      const ink = document.createElement('span');
+      ink.className = 'ripple';
+      ink.style.left = (e.clientX - r.left) + 'px';
+      ink.style.top = (e.clientY - r.top) + 'px';
+      el.appendChild(ink);
+      setTimeout(() => ink.remove(), 700);
+    });
+  });
+}
+
+// ============ Spark burst ============
+function sparks(el) {
+  if (REDUCED) return;
+  const r = el.getBoundingClientRect();
+  const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  for (let i = 0; i < 18; i++) {
+    const a = (Math.PI * 2 * i) / 18 + Math.random() * 0.35;
+    const d = 42 + Math.random() * 60;
+    const p = document.createElement('span');
+    p.className = 'spark';
+    p.style.cssText = `left:${cx}px;top:${cy}px;` +
+      `--dx:${(Math.cos(a) * d).toFixed(1)}px;--dy:${(Math.sin(a) * d).toFixed(1)}px;` +
+      `--c:${i % 2 ? 'var(--cyan)' : 'var(--violet-soft)'}`;
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 850);
+  }
+}
 
 // ============ Scroll-spy nav ============
 const navLinks = document.querySelectorAll('.nav-links a');
@@ -1134,6 +1421,7 @@ fetch('/data/projects.json')
     document.querySelectorAll('#projects-list .reveal').forEach(el => revealObserver.observe(el));
     document.querySelectorAll('#projects-list .metric-value').forEach(el => metricObserver.observe(el));
     document.querySelectorAll('#projects-list [data-tilt]').forEach(attachTilt);
+    if (!REDUCED) document.querySelectorAll('#projects-list .term-body').forEach(el => termObserver.observe(el));
     document.querySelectorAll('[data-case]').forEach(btn =>
       btn.addEventListener('click', () => openCase(btn.dataset.case)));
   })
@@ -1176,6 +1464,7 @@ document.getElementById('copy-email').addEventListener('click', function () {
   navigator.clipboard.writeText('mitraditya23@gmail.com').then(() => {
     const original = this.textContent;
     this.textContent = 'Copied ✓';
+    sparks(this);
     setTimeout(() => { this.textContent = original; }, 1800);
   });
 });

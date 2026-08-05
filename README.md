@@ -12,7 +12,8 @@ A fast, dependency-free personal portfolio built with vanilla HTML, CSS, and Jav
 - **Light / dark theme** — respects `prefers-color-scheme`, persists the choice in `localStorage`, no flash on load.
 - **Data-driven projects** — project cards render from [`data/projects.json`](data/projects.json), each with metrics, tech tags, links, and a full case study (sourced from the project READMEs) shown in an accessible modal.
 - **Resume section** — inline PDF preview plus download / open-in-new-tab buttons.
-- **Subtle polish** — pointer spotlight, scroll-reveal animations (disabled under `prefers-reduced-motion`), keyboard-accessible modal, skip link.
+- **Subtle polish** — pointer spotlight, scroll-reveal animations, keyboard-accessible modal, skip link.
+- **Motion** — hero name rises letter by letter, section titles decode out of scrambled glyphs, project terminals type themselves out on scroll, the experience timeline draws itself as you read, plus card spotlights, button shine/ripple, and a spark burst on "copy email". Every one of these is disabled under `prefers-reduced-motion`.
 - **SEO ready** — Open Graph tags and JSON-LD `Person` schema.
 - **Fully static** — no build step, no framework, no dependencies beyond Google Fonts.
 
