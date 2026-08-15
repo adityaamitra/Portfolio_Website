@@ -8,12 +8,11 @@ A fast, dependency-free personal portfolio built with vanilla HTML, CSS, and Jav
 
 ## Features
 
-- **Two-column layout** — sticky sidebar with name, section navigation (scroll-spy), and social links; content scrolls on the right. Collapses to a single column on mobile with sticky section headers.
-- **Light / dark theme** — respects `prefers-color-scheme`, persists the choice in `localStorage`, no flash on load.
-- **Data-driven projects** — project cards render from [`data/projects.json`](data/projects.json), each with metrics, tech tags, links, and a full case study (sourced from the project READMEs) shown in an accessible modal.
-- **Resume section** — inline PDF preview plus download / open-in-new-tab buttons.
-- **Subtle polish** — pointer spotlight, scroll-reveal animations, keyboard-accessible modal, skip link.
+- **Single-column scroll** — fixed top nav with scroll-spy and a reading-progress bar; below 860px it collapses to a slide-down menu, with a back-to-top button once you're past the hero.
+- **Data-driven projects** — project cards render from [`data/projects.json`](data/projects.json), each with metrics, tech tags, links, and a full case study (sourced from the project READMEs) shown in a modal. If the fetch fails, the section falls back to a card pointing at GitHub.
+- **Interactive terminal** — press `` ` `` (or the `>_` button) for a shell with `help`, `projects`, `open <n>`, `matrix`, and a table-tennis easter egg.
 - **Motion** — hero name rises letter by letter, section titles decode out of scrambled glyphs, project terminals type themselves out on scroll, the experience timeline draws itself as you read, plus card spotlights, button shine/ripple, and a spark burst on "copy email". Every one of these is disabled under `prefers-reduced-motion`.
+- **Accessibility** — AA contrast throughout, focus-trapped overlays with focus restore, visible focus rings, 44px touch targets, skip link.
 - **SEO ready** — Open Graph tags and JSON-LD `Person` schema.
 - **Fully static** — no build step, no framework, no dependencies beyond Google Fonts.
 
@@ -70,9 +69,9 @@ Static site — deploys as-is on Vercel, Netlify, or GitHub Pages.
 
 ## Design
 
-- **Fonts:** Inter (UI and body) + JetBrains Mono (labels, tags)
-- **Dark:** `#0b1120` background, slate text, teal `#5eead4` accent
-- **Light:** `#f8fafc` background, slate text, teal `#0f766e` accent
+- **Fonts:** Space Grotesk (display) + Inter (body) + JetBrains Mono (labels, tags)
+- **Palette:** `#0a0a14` background, violet `#8b5cf6` / cyan `#22d3ee` accents
+- Dark only — there's no light theme at the moment.
 
 ## Contact
 
