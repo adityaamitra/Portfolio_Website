@@ -67,6 +67,17 @@ python3 -m http.server 8000
 
 Static site — deploys as-is on Vercel, Netlify, or GitHub Pages.
 
+**Vercel Web Analytics** is wired up with the plain-HTML snippet (no package, no build step):
+
+```html
+<script defer src="/_vercel/insights/script.js"></script>
+```
+
+It's in the `<head>` of both `index.html` and `404.html`. Vercel serves that path from
+the edge once Web Analytics is enabled for the project, so it 404s on `localhost` — that's
+expected and harmless. Note the dashboard's Get Started panel defaults to the Next.js
+instructions; switch the framework selector to **HTML** to see this one.
+
 ## Design
 
 - **Fonts:** Space Grotesk (display) + Inter (body) + JetBrains Mono (labels, tags)
