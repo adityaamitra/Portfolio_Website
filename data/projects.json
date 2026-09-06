@@ -1,7 +1,95 @@
 [
   {
-    "id": "algosensei",
+    "id": "bytescroll",
     "order": 1,
+    "title": "ByteScroll: A Learning Feed Instead of a Doomscroll",
+    "period": "2026",
+    "description": "A mobile-first learning feed that replaces the morning scroll with structured Python and system design practice. 164 curated cards across 18 modules, every unit teaching a concept and showing a worked example before it quizzes you. Progress starts local with no signup and syncs across devices after a passwordless sign-in.",
+    "metrics": [
+      { "value": "164", "label": "curated learning cards" },
+      { "value": "18", "label": "modules, 2 tracks" },
+      { "value": "$0", "label": "AI API cost" }
+    ],
+    "tags": ["Next.js", "React", "TypeScript", "Supabase", "Postgres + RLS", "FastAPI", "PWA", "Vercel"],
+    "repo": "https://github.com/adityaamitra/ByteScroll",
+    "demo": "https://bytescroll.vercel.app",
+    "demoLabel": "Live app",
+    "extraLinks": [],
+    "screenshots": [
+      { "src": "/images/bytescroll/onboarding.jpg", "w": 946, "h": 2048, "caption": "Pick a track and a daily goal", "alt": "ByteScroll onboarding screen for choosing a track, a starting level, and a daily goal of 5, 10, or 20 cards" },
+      { "src": "/images/bytescroll/learn.jpg", "w": 946, "h": 2048, "caption": "The feed: teach, then example", "alt": "ByteScroll teaching card explaining Python variables, with a code example and a takeaway note" },
+      { "src": "/images/bytescroll/progress.jpg", "w": 946, "h": 2048, "caption": "XP, streaks, and cards due", "alt": "ByteScroll progress screen showing XP and level, learning days, accuracy, cards due for review, and seven-day activity" },
+      { "src": "/images/bytescroll/tracks-python.jpg", "w": 946, "h": 2048, "caption": "Python path, unlocked in order", "alt": "ByteScroll Python and algorithms track with 82 cards and modules that unlock in order" },
+      { "src": "/images/bytescroll/tracks-system-design.jpg", "w": 946, "h": 2048, "caption": "System design path", "alt": "ByteScroll system design track with 82 cards spanning foundations, networking, storage, scaling, and asynchronous systems" }
+    ],
+    "caseStudy": {
+      "intro": "Like a lot of people, I opened Instagram Reels the moment I woke up, and a few minutes of scrolling could eat a real part of the morning. I wanted that time to go to Python and system design instead, but a traditional course had too much friction to compete: choose a lesson, find where you stopped, commit to a long video, open an editor before you have learned anything. The question that became this project was simple. What if learning Python felt as easy to begin as scrolling? ByteScroll is a mobile-first learning feed built around one deliberate sequence: learn, see an example, answer, understand, review.",
+      "sections": [
+        {
+          "heading": "An engaging feed that still ends",
+          "paragraphs": [
+            "The most important product decision was refusing to build another endless feed. A learner picks a checkpoint of 5, 10, or 20 cards up front. On reaching it the app stops and offers exactly three choices: finish for today, review mistakes, or continue with five more. You can go as long as you want, but every additional block is a deliberate choice rather than something the feed does to you.",
+            "The goal was never to copy the addictive mechanics of social media. It was to borrow the low activation energy and pair it with clear stopping points and real progress. The bar I held it to: engaging enough to open every morning, successful enough to close after learning something useful."
+          ]
+        },
+        {
+          "heading": "Two tracks, 18 modules, 164 cards",
+          "paragraphs": [
+            "The Python path starts at variables, types, and conditionals and walks through loops, functions, collections, exceptions, files, modules, and object-oriented programming before turning into interview-level material: complexity analysis, arrays and hashing, stacks and queues, linked lists, recursion, trees, heaps, graphs, binary search, sorting, greedy, backtracking, and dynamic programming.",
+            "The System Design path runs from first principles to distributed systems. Client-server communication, DNS, HTTP, and API contracts, then relational and NoSQL storage, indexes and transactions, load balancing, CDNs, replication, and partitioning, then queues, events, and idempotency, consistency and consensus, reliability and observability, auth, rate limiting, and secret management. It closes with URL shortener, news feed, and chat system case studies.",
+            "Every unit is a teaching card, a worked example, and a quiz card in that order, which guarantees a beginner is taught a concept before being tested on it."
+          ]
+        },
+        {
+          "heading": "The session engine",
+          "paragraphs": [
+            "Sessions are assembled, not replayed. The engine draws from four kinds of learning state: review cards that are currently due, unseen cards from the selected module, concepts where accuracy is low, and completed quiz cards worth reinforcing. Wrong answers get scheduled for near-term review, correct recall stretches the interval before a card returns, and mistakes can be reviewed immediately at a checkpoint. The feed feels continuous while the thing underneath it stays structured.",
+            "Python and System Design keep separate progress records, so both tracks can run in parallel without either losing its place. Behind each one the app tracks completed cards, module completion, XP and levels, quiz attempts and accuracy, daily streaks, seven-day activity, concept mastery, confidence ratings, bookmarks, review schedules, and a resumable session position. Modules unlock progressively, which gives a visible path and keeps dynamic programming and consensus out of view until the foundations are done."
+          ]
+        },
+        {
+          "heading": "Local-first accounts, synced on demand",
+          "paragraphs": [
+            "A new learner can open the app and start studying without entering anything. Guest progress lives on the device. When they want continuity across devices, a passwordless email magic link signs them in and Supabase syncs the progress they already built.",
+            "Postgres row-level security policies scope every read, insert, and update to the owning user, and no database secret or admin key is ever exposed to the browser. That combination gave ByteScroll near-zero onboarding friction without giving up secure cross-device sync."
+          ]
+        },
+        {
+          "heading": "Mobile-first, and installable",
+          "paragraphs": [
+            "The original problem was a phone problem, so mobile was a requirement rather than a polish item. Responsive card layouts, phone-safe spacing and typography, persistent bottom navigation, safe-area support, horizontally scrollable code examples, and touch-sized controls throughout.",
+            "It ships as an installable Progressive Web App with basic offline app-shell support, so it can sit on a home screen and open like any other app on the phone."
+          ]
+        },
+        {
+          "heading": "Curated content, versioned like code",
+          "paragraphs": [
+            "There is no generative AI in the learning loop, and that was deliberate. An AI tutor could write explanations and field follow-ups, but it also brings recurring API cost, unpredictable output, and a moderation surface. For v1 I wanted the app to be completely useful without depending on a paid AI service. Every canonical lesson, hint, answer, and explanation is curated and version-controlled, which makes the curriculum predictable, testable, and reviewable. An AI tutor can come later as an optional alternative explanation, not as a dependency of the core experience.",
+            "Writing 164 components by hand would have made that curriculum unmaintainable. Each learning unit is a reusable typed structure that expands into teaching, example, and quiz cards, validated for module ownership, answer options, and duplicate identifiers."
+          ]
+        },
+        {
+          "heading": "The hard parts",
+          "paragraphs": [
+            "The most interesting challenge was going from a fixed ten-card prototype to a real course engine. The prototype tracked a single position in a short session. The product needed modules, independent tracks, variable session lengths, review scheduling, mistake queues, and unlimited continuation. I introduced a versioned progress model with migration logic so existing learners kept their history when the internal shape changed underneath them.",
+            "The second was the seam between guest and authenticated use. The app has to stay fully useful on local storage while still being able to hydrate and sync after login, which meant careful handling of auth state, the initial cloud record, local persistence, and debounced writes.",
+            "The stack is Next.js, React, TypeScript, and CSS on Vercel with Supabase for auth and Postgres. The repo also carries a FastAPI service with Pydantic and SQLAlchemy as the foundation for trusted grading, server-generated sessions, curriculum discovery, and progress aggregation. TypeScript checks, Pytest API tests, and a GitHub Actions workflow validate both halves. The deployed app runs standalone on its client-side curriculum today."
+          ]
+        },
+        {
+          "heading": "What I took away",
+          "paragraphs": [
+            "Product design and system design turned out to be the same conversation. \"Continue +5\" is one button in the interface and it touches session state, curriculum selection, persistence, review scheduling, progress calculation, and migration behavior.",
+            "I also learned that engagement does not require removing stopping cues. A learning product can cut friction and still feel rewarding without borrowing the patterns that make social feeds hard to put down. Building for a problem I actually have changed the question I asked of every feature, from whether it worked to whether I would really use it right after waking up.",
+            "v1 is public and complete. Next up, if I keep going: sandboxed Python exercises, weekly guided mini-projects, an interactive system-design workspace, harder interview scenarios, optional AI-generated alternative explanations, and analytics aimed at retention and delayed recall rather than time on screen."
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "algosensei",
+    "order": 2,
     "title": "AlgoSensei: GenAI DSA Tutor",
     "period": "2025 - Present",
     "description": "A Socratic tutoring app for 175+ LeetCode problems across 14 DSA patterns. Instead of handing you the solution, it asks calibrated questions until you reach the insight yourself. A two-stage leakage gate makes that architecturally enforced: the system cannot reveal the answer even if you ask directly.",
@@ -45,7 +133,7 @@
   },
   {
     "id": "multi-agent-productivity-assistant",
-    "order": 2,
+    "order": 3,
     "title": "Multi-Agent Personal Productivity Assistant",
     "period": "2026",
     "description": "A multi-agent CrewAI system with 6 specialized agents and 5 custom Python tools that turns a raw task list into Eisenhower-scored priorities, a time-blocked weekly schedule, meeting prep packages, and a 30-day roadmap, streamed live to a Flask dashboard over SSE.",
@@ -86,7 +174,7 @@
   },
   {
     "id": "dqn-atari-freeway",
-    "order": 3,
+    "order": 4,
     "title": "Deep Q-Learning on Atari Freeway",
     "period": "2025",
     "description": "A DQN agent trained from scratch on ALE/Freeway-v5 with no rules and no instructions, just a +1 reward per crossing. Implements the full Mnih et al. 2015 architecture in PyTorch and reaches 73% of human-level performance after 5,000 episodes on a free Kaggle T4 GPU.",
@@ -127,7 +215,7 @@
   },
   {
     "id": "med-llama-medical-qa",
-    "order": 4,
+    "order": 5,
     "title": "Med-Llama: Medical Q&A with a Fine-Tuned LLM",
     "period": "2025",
     "description": "Llama-3.2-1B-Instruct fine-tuned on the MedQuAD medical Q&A dataset with LoRA/PEFT, training under 1% of the model's parameters on a free Kaggle T4. Evaluated with ROUGE against the base model, with automatic medical disclaimers baked into every response.",

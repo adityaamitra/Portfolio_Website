@@ -546,6 +546,44 @@ footer a:hover { color: var(--cyan); }
 .modal .p-links { margin-top: 1.8rem; }
 @media (max-width: 720px) { .modal { padding: 1.8rem 1.4rem; } }
 
+/* ============ Screenshot gallery ============ */
+.shots {
+  display: flex; gap: .9rem; overflow-x: auto; scroll-snap-type: x proximity;
+  padding: .3rem .3rem 1rem; margin: 1.2rem -.3rem .4rem;
+  scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent;
+}
+.shots::-webkit-scrollbar { height: 6px; }
+.shots::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+.shot {
+  flex: 0 0 auto; margin: 0; padding: 0; border: 0; background: none;
+  text-align: left; cursor: zoom-in; scroll-snap-align: start;
+  font: inherit; color: inherit;
+}
+.shot img {
+  display: block; height: 300px; width: auto; border-radius: 14px;
+  border: 1px solid var(--border-strong); background: var(--bg);
+  transition: transform .25s var(--ease-spring), border-color .25s ease;
+}
+.shot:hover img, .shot:focus-visible img { transform: translateY(-4px); border-color: var(--violet); }
+.shot figcaption { font-size: .72rem; color: var(--text-3); margin-top: .55rem; }
+.shots-hint { font-size: .74rem; color: var(--text-3); margin: 0 0 1.4rem; }
+
+.lightbox {
+  position: fixed; inset: 0; z-index: 300; padding: 2rem;
+  background: rgba(6, 6, 14, .92); backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: center; cursor: zoom-out;
+  opacity: 0; visibility: hidden; transition: opacity .2s ease, visibility .2s ease;
+}
+.lightbox.open { opacity: 1; visibility: visible; }
+.lightbox img {
+  max-width: min(100%, 420px); max-height: 88vh; border-radius: 18px;
+  border: 1px solid var(--border-strong); box-shadow: 0 30px 80px rgba(0, 0, 0, .6);
+}
+@media (max-width: 720px) {
+  .shot img { height: 240px; }
+  .lightbox { padding: 1rem; }
+}
+
 /* ============ CLI overlay ============ */
 .cli-overlay {
   position: fixed; inset: 0; z-index: 300;
@@ -657,6 +695,7 @@ kbd {
   .reveal, .hero [data-hero] { opacity: 1; transform: none; transition: none; animation: none; }
   .orb, .availability::before, .scroll-hint::after, .marquee-track, .tl-cursor::after, .hero-photo img, .type-caret::after { animation: none; }
   .term { transition: none; }
+  .shot img { transition: none; }
 }
 </style>
 </head>
@@ -959,6 +998,11 @@ kbd {
   </div>
 </div>
 
+<!-- Screenshot lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot preview">
+  <img id="lightbox-img" src="" alt="">
+</div>
+
 <script>
 // ============ Helpers ============
 const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
@@ -1040,6 +1084,14 @@ const VISUALS = {
     ['tl-hint', '"What if you could remember every'],
     ['tl-hint', ' number you\'ve already seen?"'],
     ['tl-ok', '✓ leakage gate: PASS (0 reveals)'],
+  ]},
+  'bytescroll': { title: 'bytescroll · morning session', lines: [
+    ['tl-cmd', 'session start --track python --cards 10'],
+    ['tl-out', '01 teach     list comprehensions'],
+    ['tl-out', '02 example   [n*n for n in nums]'],
+    ['tl-hint', '03 quiz      what does this return?'],
+    ['tl-ok', '✓ 10/10 · streak 14 · +120 XP'],
+    ['tl-star', 'checkpoint → finish · review · +5 more'],
   ]},
   'multi-agent-productivity-assistant': { title: 'crew · 6 agents running', lines: [
     ['tl-cmd', 'crew run --tasks 12'],
@@ -1139,6 +1191,40 @@ fetch('/data/projects.json')
   })
   .catch(err => console.error('Failed to load projects:', err));
 
+// ============ Screenshot gallery ============
+// A shot whose file is missing removes itself, and an empty strip takes the hint with it,
+// so the modal degrades to text rather than showing broken images.
+function shotFailed(img) {
+  const strip = img.closest('.shots');
+  img.closest('.shot').remove();
+  if (strip && !strip.querySelector('.shot')) {
+    const hint = strip.nextElementSibling;
+    if (hint && hint.classList.contains('shots-hint')) hint.remove();
+    strip.remove();
+  }
+}
+
+const shotsHtml = p => (p.screenshots || []).length
+  ? `<div class="shots">${p.screenshots.map(s => `
+      <button class="shot" type="button" data-shot="${esc(s.src)}" data-alt="${esc(s.alt || '')}">
+        <img src="${esc(s.src)}" alt="${esc(s.alt || '')}" loading="lazy" decoding="async"
+             ${s.w && s.h ? `width="${esc(s.w)}" height="${esc(s.h)}"` : ''}
+             onerror="shotFailed(this)">
+        ${s.caption ? `<figcaption>${esc(s.caption)}</figcaption>` : ''}
+      </button>`).join('')}</div>
+     <p class="shots-hint">Tap a screenshot to view it full size.</p>`
+  : '';
+
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+function openShot(src, alt) {
+  lightboxImg.src = src;
+  lightboxImg.alt = alt || '';
+  lightbox.classList.add('open');
+}
+function closeShot() { lightbox.classList.remove('open'); lightboxImg.src = ''; }
+lightbox.addEventListener('click', closeShot);
+
 // ============ Case-study modal ============
 const overlay = document.getElementById('modal-overlay');
 let lastFocus = null;
@@ -1152,11 +1238,14 @@ function openCase(id) {
     <h2 id="modal-title">${esc(p.title)}</h2>
     ${metricsHtml(p)}
     <p class="modal-intro">${esc(cs.intro)}</p>
+    ${shotsHtml(p)}
     ${(cs.sections || []).map(s => `
       <h3>${esc(s.heading)}</h3>
       ${(s.paragraphs || []).map(par => `<p>${esc(par)}</p>`).join('')}`).join('')}
     ${projectLinks(p, true)}`;
   document.querySelectorAll('#modal-content .metric-value').forEach(countUp);
+  document.querySelectorAll('#modal-content .shot').forEach(btn =>
+    btn.addEventListener('click', () => openShot(btn.dataset.shot, btn.dataset.alt)));
   lastFocus = document.activeElement;
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -1169,7 +1258,11 @@ function closeCase() {
 }
 document.getElementById('modal-close').addEventListener('click', closeCase);
 overlay.addEventListener('click', e => { if (e.target === overlay) closeCase(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.classList.contains('open')) closeCase(); });
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if (lightbox.classList.contains('open')) closeShot();
+  else if (overlay.classList.contains('open')) closeCase();
+});
 
 // ============ Copy email ============
 document.getElementById('copy-email').addEventListener('click', function () {
